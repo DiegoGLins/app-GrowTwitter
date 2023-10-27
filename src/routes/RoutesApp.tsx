@@ -3,6 +3,7 @@ import Cadastro from '../pages/Cadastro'
 import Login from '../pages/Login'
 import Home from '../pages/Home'
 import ProfilelUser from '../pages/ProfileUser'
+import Explorer from '../pages/Explorer'
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
     {
         path: '/profile-user',
         element: <ProfilelUser />
+    },
+    {
+        path: '/explorer',
+        element: <Explorer />
     }
 ])
 

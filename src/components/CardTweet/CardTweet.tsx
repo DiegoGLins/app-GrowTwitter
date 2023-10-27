@@ -2,6 +2,7 @@ import { AvatarTweet, CardTweetStyled } from "./CardTweetStyled";
 import IconsTweet from "./IconsTweet";
 import iconeResponder from '/icone_responder.svg'
 import iconeCurtir from '/icone_curtir.svg'
+import { IconsTweetStyled } from "./IconsTweetStyled";
 
 export interface CardTweetProps {
     avatar: string;
@@ -11,6 +12,8 @@ export interface CardTweetProps {
 }
 
 const CardTweet: React.FC<CardTweetProps> = ({ avatar, nameUser, usernameUser, message }) => {
+    //Aqui vai a logica de curtir e comentar pegando as informações do usuario e do Tweet do ContentContext
+
     return (
         <CardTweetStyled>
             <AvatarTweet src={avatar} alt='avatar-tweet'></AvatarTweet>
@@ -19,8 +22,13 @@ const CardTweet: React.FC<CardTweetProps> = ({ avatar, nameUser, usernameUser, m
                     <p style={{ border: '1px solid #f015', width: '105px', height: '15px' }}><strong>{nameUser}</strong></p>
                     <p style={{ border: '1px solid #f015', width: '105px', height: '15px' }}>{usernameUser}</p>
                 </div>
-                <p style={{ minWidth: '100%', margin: '5px 5px 10px 15px', border: '1px solid #f015', overflow: "hidden", minHeight: '15px' }}>{message}</p>
-                <IconsTweet iconComent={iconeResponder} iconLike={iconeCurtir} countComent={0} countLike={0}></IconsTweet>
+                <p style={{ minWidth: '100%', margin: '5px 0px 10px 15px', border: '1px solid #f015', overflow: "hidden", minHeight: '15px' }}>{message}</p>
+                <IconsTweetStyled onClick={() => console.log()}>
+                    <IconsTweet icon={iconeResponder} count={0}></IconsTweet>
+                </IconsTweetStyled>
+                <IconsTweetStyled>
+                    <IconsTweet icon={iconeCurtir} count={0}></IconsTweet>
+                </IconsTweetStyled>
             </div>
         </CardTweetStyled>
     )

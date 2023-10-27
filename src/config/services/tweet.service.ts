@@ -2,29 +2,31 @@
 import apiService, { ResponseApi } from "./api.service";
 
 export interface TweetDto {
+    idUser?: string
+    nameUser?: string
+    usernameAuthorTweet: string
     content: string;
-    idUser: string
-    authorTweet: string
 }
 
-export interface UpdateTweetDto {
-    idUser: string;
-    idTweet: string;
-    content?: string
-}
+// export interface UpdateTweetDto {
+//     idUser: string;
+//     idTweet: string;
+//     content?: string
+// }
 
 export interface CreateTweetRequest {
     content: string;
-    idUser: string
-    authorTweet: string
+    idUser: string;
+    nameUser: string;
+    usernameAuthorTweet: string
     token: string
 }
 
 export interface UpdateTweetRequest {
     id: string;
-    content: string;
-    idUser: string
-    authorTweet: string
+    content?: string;
+    idUser?: string
+    authorTweet?: string
     token: string
 }
 
@@ -83,6 +85,32 @@ export async function listAll(token: string) {
             message: resposta.data.message,
             code: resposta.data.code,
             data: resposta.data.data,
+        };
+    } catch (error: any) {
+        return {
+            ok: error.response.data?.ok,
+            code: error.response.data?.code,
+            message: error.response.data?.message,
+            data: error.response.data?.data,
+        };
+    }
+}
+
+export async function update(data: UpdateTweetRequest) {
+    try {
+        const body = { tweet: data.content };
+
+        const resposta = await apiService.put(`/tweets/${data.id}`, body, {
+            headers: {
+                Authorization: data.token,
+            },
+        });
+
+        return {
+            ok: resposta.data?.ok,
+            code: resposta.data?.code,
+            message: resposta.data?.message,
+            data: resposta.data?.data,
         };
     } catch (error: any) {
         return {

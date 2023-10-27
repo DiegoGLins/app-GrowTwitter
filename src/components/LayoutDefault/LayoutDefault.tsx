@@ -1,13 +1,16 @@
 import * as C from '../../App.styles'
 import logoGrowTweet from '/logo_growtweet.svg'
-import iconePaginaInicial from '/icone_pagina_Inicial.svg'
-import iconeExplorar from '/icone_explorar.svg'
-import iconePerfilSelecionado from '/icone_perfil_selecionado.svg'
+
+
 import Sidebar from '../SideBar'
 import TogleMenu from '../TogleMenu'
-import IconTogleMenu from '../IconTogleMenu'
+
 import { ButtonTogleMenuStyled } from '../TogleMenu/TogleMenuStyled'
 import FooterSideBar from '../FooterSideBar'
+import ModalTweetDefault from '../ModalTweetDefault/ModalTweetDefault'
+import { useCallback, useEffect, useState } from 'react'
+import { CreateTweetRequest, TweetDto, create } from '../../config/services/tweet.service'
+import { useNavigate } from 'react-router-dom'
 
 interface LayoutDefaultProps {
     children?: React.ReactNode
@@ -15,26 +18,103 @@ interface LayoutDefaultProps {
 
 const LayoutDefault: React.FC<LayoutDefaultProps> = ({ children }) => {
 
+    const navigate = useNavigate()
+
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
+    const [usernameUser, setUsernameUser] = useState<string>('')
+    const [idUser, setIdUser] = useState<string>('')
+    const [tweet, setTweet] = useState<TweetDto[]>([])
+
+    const [error, setError] = useState('');
+    const [contentNewTeet, setContentNewtweet] = useState<string>('')
+
+    function handleClose() {
+        setIsOpen(false)
+    }
+
+    function handleOpen() {
+        setIsOpen(true)
+    }
+
+    const token = localStorage.getItem("token")
+
+
+    // useEffect(()=> {
+    //     const getData = () => {
+
+    //     }
+    // },[])
+
+
+
+    const addTweet = useCallback((tweet: CreateTweetRequest) => {
+
+        if (!token) {
+            navigate('/')
+            return;
+        }
+
+        const newTweet: CreateTweetRequest = {
+            idUser: `${idUser}`,
+            usernameAuthorTweet: `${usernameUser}`,
+            nameUser: `${nameAuthorTweet}`,
+            content: tweet.content,
+            token: token
+        }
+
+        // fetch(`${apiService}/tweets`, {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json', },
+        //     body: JSON.stringify(newTweet),
+        // }).then(response => {
+        //     if (response.ok) {
+        //         console.log('Tweet adicionado com sucesso')
+        //     }
+        // });
+        // setTweet(prevTweets => [...prevTweets, newTweet]);
+        // setContentNewtweet('')
+
+        async function createTweet() {
+            const response = await create(newTweet)
+
+            if (response.code !== 201) {
+                setError(response.message!)
+                return;
+            }
+
+            setError('')
+            setContentNewtweet(response.data.data.content)
+        }
+        createTweet()
+    }, [])
+
     return (
-        <div>
-            <C.ContatinerLayoutDefault>
-                <C.ContainerSideBarDefault>
-                    <Sidebar>
-                        <div className="logoSideBar">
-                            <img style={{ height: '35px', width: '100px' }} src={logoGrowTweet}></img>
-                        </div>
-                        <TogleMenu>
-                            <IconTogleMenu icon={iconePaginaInicial} title={"Pagina Inicial"} />
-                            <IconTogleMenu icon={iconeExplorar} title={"Explorar"} />
-                            <IconTogleMenu icon={iconePerfilSelecionado} title={"Perfil"} />
-                            <ButtonTogleMenuStyled className='buttonTweet' type='button'>Tweetar</ButtonTogleMenuStyled>
-                        </TogleMenu>
-                    </Sidebar>
-                    <FooterSideBar avatar={""} nameUser={""} usernameUser={""} />
-                </C.ContainerSideBarDefault>
-                {children}
-            </C.ContatinerLayoutDefault>
-        </div>
+        <>
+            <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
+                idUser: idUser,
+                nameUser: nameAuthorTweet,
+                usernameAuthorTweet: usernameUser,
+                content: contentNewTeet,
+                token: token!
+            })} message={contentNewTeet}>
+            </ModalTweetDefault>
+            <div>
+                <C.ContatinerLayoutDefault>
+                    <C.ContainerSideBarDefault>
+                        <Sidebar>
+                            <div className="logoSideBar">
+                                <img style={{ height: '35px', width: '100px' }} src={logoGrowTweet}></img>
+                            </div>
+                            <TogleMenu>
+                                <ButtonTogleMenuStyled onClick={handleOpen} className='buttonTweet' type='button'>Tweetar</ButtonTogleMenuStyled>
+                            </TogleMenu>
+                        </Sidebar>
+                        <FooterSideBar avatar={""} nameUser={""} usernameUser={""} />
+                    </C.ContainerSideBarDefault>
+                    {children}
+                </C.ContatinerLayoutDefault>
+            </div></>
     )
 }
 

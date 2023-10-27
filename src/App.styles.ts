@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ContatinerLayoutDefault = styled.div`
 background-color: #fff;
 color: '#0000';
-min-height: 100vh;
+min-height: 100%;
 min-width: 100%;
 margin: 0;
 padding: 0;

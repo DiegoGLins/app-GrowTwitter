@@ -174,10 +174,27 @@ body {
   transform: scale(1.3);
 }
 
-.iconComent:hover {
-  transform: scale(1.2);
+.iconResponse:hover {
+  transform: scale(1.15, 1.15);
+  opacity: 0.8;
 }
 
-.iconLike:hover {
-  transform: scale(1.2);
+/* .iconLike:hover {
+  height: 18px;
+  width: 18px;
+} */
+
+
+
+.size-box-tweet {
+  width: max-content;
+  height: fit-content;
+  font-size: 16px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  border: 0.5px solid inset;
+  row-gap: 28px;
+  column-gap: 20px;
+  position: relative;
+  grid-area: auto;
+  padding: 10px;
 }

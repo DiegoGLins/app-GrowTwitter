@@ -10,16 +10,18 @@ border-radius: 100%;
 `
 
 export const CardTweetStyled = styled.div`
-margin: 5px 0px 5px 0px;
+margin: 2px;
 padding-left: 20px;
 max-width: 100vw;
 display: flex;
 justify-content: start;
 align-items: center;
 background-color: #fff;
-border-bottom: 2px solid #e9e9e9;
-border-top: 2px solid #e9e9e9;
+border: 2px solid #e9e9e9;
 border-bottom-style: inset;
 color: #000;
 height: 110px;
+overflow-y: hidden;
+border-radius: 16px;
+position: relative;
 `

@@ -2,8 +2,10 @@ import styled from "styled-components";
 
 export const IconsTweetStyled = styled.a`
 display: inline-flex;
-height: 25px;
-width: 25px;
+justify-content: center;
+align-items: center;
+/* height: 18px;
+width: 18px; */
 margin: 0px 40px 0px 15px;
 padding: 0px;
 `

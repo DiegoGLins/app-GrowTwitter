@@ -1,16 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as C from '../../App.styles'
 import logoGrowTweet from '/logo_growtweet.svg'
-
-
 import Sidebar from '../SideBar'
 import TogleMenu from '../TogleMenu'
-
 import { ButtonTogleMenuStyled } from '../TogleMenu/TogleMenuStyled'
 import FooterSideBar from '../FooterSideBar'
 import ModalTweetDefault from '../ModalTweetDefault/ModalTweetDefault'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { CreateTweetRequest, TweetDto, create } from '../../config/services/tweet.service'
 import { useNavigate } from 'react-router-dom'
+import { FooterButton } from '../FooterSideBar/FooterSidebarStyled'
 
 interface LayoutDefaultProps {
     children?: React.ReactNode
@@ -38,14 +37,6 @@ const LayoutDefault: React.FC<LayoutDefaultProps> = ({ children }) => {
     }
 
     const token = localStorage.getItem("token")
-
-
-    // useEffect(()=> {
-    //     const getData = () => {
-
-    //     }
-    // },[])
-
 
 
     const addTweet = useCallback((tweet: CreateTweetRequest) => {
@@ -110,11 +101,15 @@ const LayoutDefault: React.FC<LayoutDefaultProps> = ({ children }) => {
                                 <ButtonTogleMenuStyled onClick={handleOpen} className='buttonTweet' type='button'>Tweetar</ButtonTogleMenuStyled>
                             </TogleMenu>
                         </Sidebar>
-                        <FooterSideBar avatar={""} nameUser={""} usernameUser={""} />
                     </C.ContainerSideBarDefault>
+                    <C.ContainerFooter>
+                        <FooterSideBar avatar={''} nameUser={''} usernameUser={''}>
+                        </FooterSideBar>
+                    </C.ContainerFooter>
                     {children}
                 </C.ContatinerLayoutDefault>
-            </div></>
+            </div >
+        </>
     )
 }
 

@@ -15,11 +15,11 @@ const ProfilelUser: React.FC = () => {
     <div style={{ display: "flex", maxHeight: '100%', overflow: 'auto' }}>
       <LayoutDefault />
       <FeedBox>
-        <HeaderProfileUser avatar={""} nameUser={""} usernameUser={""} />
-        <CardTweet avatar={''} nameUser={''} usernameUser={''} message={''} ></CardTweet>
+        <HeaderProfileUser avatar={""} nameUser={"diegoLins"} usernameUser={"diego"} />
+        <CardTweet avatar={''} nameUser={'diego'} usernameUser={'diegoLins'} message={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore eos dolore minima corporis exercitationem in ea incidunt recusandae optio! Natus incidunt nesciunt qui veniam aliquid recusandae officiis neque quidem accusamus?.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta voluptatem error aspernatur incidunt quisquam quae reiciendis porro, excepturi eveniet dolor dolorum sequi tenetur molestiae autem placeat labore consequatur culpa ipsum.'} ></CardTweet>
       </FeedBox>
       <SideExplorer>
-        <CardExplorer></CardExplorer>
+        <CardExplorer />
       </SideExplorer>
     </div>
   )

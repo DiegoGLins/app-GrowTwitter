@@ -5,63 +5,74 @@ import HeaderPage from "../components/HeaderPage"
 import LayoutDefault from "../components/LayoutDefault"
 import SideExplorer from "../components/SideExplorer"
 import { useNavigate } from "react-router-dom"
-import { TweetDto, listAll } from "../config/services/tweet.service"
+import { listAll } from "../config/services/tweet.service"
 import { useCallback, useState } from "react"
 import { CardTweetProps } from "../components/CardTweet/CardTweet"
-import ModalTweetDefault from "../components/ModalTweetDefault/ModalTweetDefault"
-import apiService from "../config/services/api.service"
+// import ModalTweetDefault from "../components/ModalTweetDefault/ModalTweetDefault"
+
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [alert, setAlert] = useState('Nenhum tweet para listar');
+  const [alert, setAlert] = useState('');
   const [allTweets, setAllTweets] = useState<CardTweetProps[]>([])
 
 
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
-  const [usernameUser, setUsernameUser] = useState<string>('')
-  const [idUser, setIdUser] = useState<string>('')
-  const [tweet, setTweet] = useState<TweetDto[]>([])
-  const [contentNewTeet, setContentNewtweet] = useState<string>('')
+  // const [isOpen, setIsOpen] = useState<boolean>(false)
+  // const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
+  // const [usernameUser, setUsernameUser] = useState<string>('')
+  // const [idUser, setIdUser] = useState<string>('')
+  // const [tweet, setTweet] = useState<TweetDto[]>([])
+  // const [contentNewTeet, setContentNewtweet] = useState<string>('')
 
-  function handleClose() {
-    setIsOpen(false)
-  }
+  // function handleClose() {
+  //   setIsOpen(false)
+  // }
 
-  function handleOpen() {
-    setIsOpen(true)
-  }
+  // function handleOpen() {
+  //   setIsOpen(true)
+  // }
 
+  const token = localStorage.getItem("token")
 
-  const addTweet = useCallback((tweet: TweetDto) => {
+  // const addTweet = useCallback((tweet: CreateTweetRequest) => {
 
-    // const newTweet: TweetDto = {
-    //   idUser: `${idUser}`,
-    //   username: `${usernameUser}`,
-    //   authorTweet: `${nameAuthorTweet}`,
-    //   content: tweet.content
-    // }
+  //   // const newTweet: TweetDto = {
+  //   //   idUser: `${idUser}`,
+  //   //   username: `${usernameUser}`,
+  //   //   authorTweet: `${nameAuthorTweet}`,
+  //   //   content: tweet.content
+  //   // }
 
-    // fetch(`${apiService}/tweets`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json', },
-    //   body: JSON.stringify(newTweet),
-    // }).then(response => {
-    //   if (response.ok) {
-    //     console.log('Tweet adicionado com sucesso')
-    //   }
-    // });
-    // setTweet(prevTweets => [...prevTweets, newTweet]);
-    // setContentNewtweet('')
+  //   // fetch(`${apiService}/tweets`, {
+  //   //   method: 'POST',
+  //   //   headers: { 'Content-Type': 'application/json', },
+  //   //   body: JSON.stringify(newTweet),
+  //   // }).then(response => {
+  //   //   if (response.ok) {
+  //   //     console.log('Tweet adicionado com sucesso')
+  //   //   }
+  //   // });
+  //   // setTweet(prevTweets => [...prevTweets, newTweet]);
+  //   // setContentNewtweet('')
+  //   if (!token) {
+  //     navigate('/')
+  //     return;
+  //   }
 
+  //   const newTweet: CreateTweetRequest = {
+  //     idUser: `${idUser}`,
+  //     usernameAuthorTweet: `${usernameUser}`,
+  //     nameUser: `${nameAuthorTweet}`,
+  //     content: tweet.content,
+  //     token: token
+  //   }
 
-  }, [])
+  // }, [])
 
 
   useCallback(() => {
 
-    const token = localStorage.getItem("token")
     if (!token) {
       navigate("/")
       return
@@ -85,13 +96,14 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
+      {/* <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
         idUser: idUser,
         nameUser: nameAuthorTweet,
         usernameAuthorTweet: usernameUser,
         content: contentNewTeet,
+        token: token!
       })} message={contentNewTeet}>
-      </ModalTweetDefault>
+      </ModalTweetDefault> */}
       <div style={{ display: "flex" }}>
         <LayoutDefault />
         <FeedBox>

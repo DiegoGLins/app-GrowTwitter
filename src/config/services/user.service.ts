@@ -7,7 +7,7 @@ export interface UserDto {
     username: string,
     email: string
     password: string,
-    token: string,
+    token?: string,
     following: []
     followers: []
     tweets: []
@@ -19,10 +19,10 @@ export async function listUsers() {
         const response = await apiService.get('users')
         const users = response.data.data.map((item: UserDto) => {
             return {
+                id: item.id,
                 name: item.name,
                 username: item.username,
                 email: item.email,
-                token: item.token,
                 tweets: item.tweets,
                 reTweet: item.reTweet
             }

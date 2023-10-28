@@ -96,25 +96,17 @@ const Home: React.FC = () => {
 
   return (
     <>
-      {/* <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
-        idUser: idUser,
-        nameUser: nameAuthorTweet,
-        usernameAuthorTweet: usernameUser,
-        content: contentNewTeet,
-        token: token!
-      })} message={contentNewTeet}>
-      </ModalTweetDefault> */}
       <div style={{ display: "flex" }}>
         <LayoutDefault />
         <FeedBox>
           <HeaderPage title={'Página Inicial'} />
-          {!allTweets ? <>''</> :
+          {!allTweets ? <></> :
             allTweets.map((tweeets) => (
               <CardTweet key={tweeets.usernameUser} avatar={tweeets.avatar} nameUser={tweeets.nameUser} usernameUser={tweeets.usernameUser} message={tweeets.message}></CardTweet>
             ))}
         </FeedBox>
         <SideExplorer>
-          <CardExplorer></CardExplorer>
+          <CardExplorer />
         </SideExplorer>
       </div></>
   )

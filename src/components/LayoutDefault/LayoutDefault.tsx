@@ -9,7 +9,6 @@ import ModalTweetDefault from '../ModalTweetDefault/ModalTweetDefault'
 import { useCallback, useState } from 'react'
 import { CreateTweetRequest, TweetDto, create } from '../../config/services/tweet.service'
 import { useNavigate } from 'react-router-dom'
-import { FooterButton } from '../FooterSideBar/FooterSidebarStyled'
 
 interface LayoutDefaultProps {
     children?: React.ReactNode

@@ -34,13 +34,29 @@ export async function login(objlogin: LoginRequest): Promise<ResponseApi> {
     }
 }
 
-// export async function logout() {
-//     try {
+export async function logout(token: string): Promise<ResponseApi> {
+    try {
+        const response = await apiService.get("/auth/logout", {
+            headers: {
+                Authorization: token
+            }
+        })
 
-//     } catch (error: any) {
-
-//     }
-// }
+        return {
+            ok: response.data?.ok,
+            code: response.data?.code,
+            message: response.data?.message,
+            data: response.data?.data
+        }
+    } catch (error: any) {
+        return {
+            ok: error.response.data?.ok,
+            code: error.response.data?.code,
+            message: error.response.data?.message,
+            data: error.response.data?.data
+        }
+    }
+}
 
 export async function cadastro(objCadastro: CadastroRequest): Promise<ResponseApi> {
     try {

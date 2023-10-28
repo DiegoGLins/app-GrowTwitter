@@ -7,8 +7,8 @@ import SideExplorer from "../components/SideExplorer"
 
 const ProfilelUser: React.FC = () => {
 
-  //logica para receber informações dos tweets enviados pelo usuario logado passando as informações
-  //para atualizar o cardTweet e o Header do usuario
+  //logica para receber informações dos tweets do usuario da pagina que estou acessando, tazendo as informações
+  //do tweet e do usuario para atualizar o cardTweet
 
   return (
 

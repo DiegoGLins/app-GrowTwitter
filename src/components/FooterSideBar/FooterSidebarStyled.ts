@@ -6,7 +6,6 @@ align-items: start;
 width: 170px;
 height: 110px;
 margin-left: 65px;
-justify-content: auto;
 
 p> {
     display: flex;

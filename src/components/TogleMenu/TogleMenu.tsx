@@ -24,7 +24,6 @@ const TogleMenu: React.FC<TogleMenuProps> = ({ children }) => {
         navigate('/explorer')
     }
 
-
     return (
         <TogleMenuStyled>
             <IconTogleMenuStyled onClick={navigateHome} className="iconTogleButton">

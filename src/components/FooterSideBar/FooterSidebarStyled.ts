@@ -6,6 +6,7 @@ align-items: start;
 width: 170px;
 height: 110px;
 margin-left: 65px;
+font-size: 14px;
 
 p> {
     display: flex;
@@ -18,7 +19,7 @@ export const FooterButton = styled.button`
 background-color: #fff;
 justify-content: flex-end;
 align-items: start;
-padding-left: 15px;
+padding-left: 5px;
 border: none;
 height: 30px;
 width: 30px;

@@ -12,4 +12,5 @@ padding: 2px 0px 15px 20px;
 align-items: start;
 justify-content: center;
 background-color: #fff;
+position: relative
 `

@@ -1,8 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+
+import { useState } from 'react'
 import '../App.css'
 import { login } from '../config/services/auth.service'
 import { useNavigate } from 'react-router-dom'
+import { UserDto } from '../config/services/user.service'
 
 const Login: React.FC = () => {
+
+    const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
+    const [usernameUser, setUsernameUser] = useState<string>('')
+    const [id, setId] = useState<string>('')
+    const [userLogged, setUserLogged] = useState<UserDto[]>([])
+    const [avatar, setAvatar] = useState<string>('')
+    const [error, setError] = useState('');
+
 
     const navCadastro = (url: string) => {
         navigate(url)
@@ -17,8 +30,6 @@ const Login: React.FC = () => {
             password: ev.currentTarget.password.value
         }
 
-        console.log(user)
-
         const response = await login(user)
 
         if (!response.ok) {
@@ -28,10 +39,10 @@ const Login: React.FC = () => {
 
         if (response.code === 200) {
             alert(response.message)
-
+            localStorage.setItem('userLogged', JSON.stringify(response.data))
             localStorage.setItem('token', response.data.token)
-
             navigate("/home")
+
         }
 
         ev.currentTarget.username.value = '',

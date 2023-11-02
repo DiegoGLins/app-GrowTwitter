@@ -1,79 +1,56 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import CardExplorer from "../components/CardExplorer"
+import * as C from '../App.styles'
 import CardTweet from "../components/CardTweet"
 import FeedBox from "../components/FeedBox"
 import HeaderPage from "../components/HeaderPage"
-import LayoutDefault from "../components/LayoutDefault"
 import SideExplorer from "../components/SideExplorer"
 import { useNavigate } from "react-router-dom"
-import { listAll } from "../config/services/tweet.service"
-import { useCallback, useState } from "react"
-import { CardTweetProps } from "../components/CardTweet/CardTweet"
-// import ModalTweetDefault from "../components/ModalTweetDefault/ModalTweetDefault"
-
+import { CreateTweetRequest, TweetDto, create, listAll } from "../config/services/tweet.service"
+import { useCallback, useEffect, useState } from "react"
+import FooterSideBar from "../components/FooterSideBar"
+import ModalTweetDefault from "../components/ModalTweetDefault"
+import Sidebar from "../components/SideBar"
+import TogleMenu from "../components/TogleMenu"
+import { ButtonTogleMenuStyled } from "../components/TogleMenu/TogleMenuStyled"
+import logoGrowTweet from '/logo_growtweet.svg'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [alert, setAlert] = useState('');
-  const [allTweets, setAllTweets] = useState<CardTweetProps[]>([])
+  const [allTweets, setAllTweets] = useState<TweetDto[]>([])
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
+  const [usernameUser, setUsernameUser] = useState<string>('')
+  const [idUser, setIdUser] = useState<string>('')
+  const [tweet, setTweet] = useState<TweetDto[]>([])
+  const [newTweet, setNewTweet] = useState<CreateTweetRequest[]>([])
 
+  const [error, setError] = useState('');
+  const [contentNewTeet, setContentNewtweet] = useState<string>('')
 
-  // const [isOpen, setIsOpen] = useState<boolean>(false)
-  // const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
-  // const [usernameUser, setUsernameUser] = useState<string>('')
-  // const [idUser, setIdUser] = useState<string>('')
-  // const [tweet, setTweet] = useState<TweetDto[]>([])
-  // const [contentNewTeet, setContentNewtweet] = useState<string>('')
+  const token = localStorage.getItem('token')
+  const logged = localStorage.getItem('userLogged')
 
-  // function handleClose() {
-  //   setIsOpen(false)
-  // }
+  function handleClose() {
+    setIsOpen(false)
+  }
 
-  // function handleOpen() {
-  //   setIsOpen(true)
-  // }
+  function handleOpen() {
+    setIsOpen(true)
+  }
 
-  const token = localStorage.getItem("token")
-
-  // const addTweet = useCallback((tweet: CreateTweetRequest) => {
-
-  //   // const newTweet: TweetDto = {
-  //   //   idUser: `${idUser}`,
-  //   //   username: `${usernameUser}`,
-  //   //   authorTweet: `${nameAuthorTweet}`,
-  //   //   content: tweet.content
-  //   // }
-
-  //   // fetch(`${apiService}/tweets`, {
-  //   //   method: 'POST',
-  //   //   headers: { 'Content-Type': 'application/json', },
-  //   //   body: JSON.stringify(newTweet),
-  //   // }).then(response => {
-  //   //   if (response.ok) {
-  //   //     console.log('Tweet adicionado com sucesso')
-  //   //   }
-  //   // });
-  //   // setTweet(prevTweets => [...prevTweets, newTweet]);
-  //   // setContentNewtweet('')
-  //   if (!token) {
-  //     navigate('/')
-  //     return;
-  //   }
-
-  //   const newTweet: CreateTweetRequest = {
-  //     idUser: `${idUser}`,
-  //     usernameAuthorTweet: `${usernameUser}`,
-  //     nameUser: `${nameAuthorTweet}`,
-  //     content: tweet.content,
-  //     token: token
-  //   }
-
-  // }, [])
-
+  useEffect(() => {
+    if (!logged) {
+      navigate("/")
+      return
+    }
+  }, [])
 
   useCallback(() => {
 
-    if (!token) {
+    if (!logged) {
       navigate("/")
       return
     }
@@ -87,6 +64,7 @@ const Home: React.FC = () => {
       }
 
       setAlert('')
+
       setAllTweets([...allTweets, response.data])
     }
     getData()
@@ -94,15 +72,66 @@ const Home: React.FC = () => {
   }, [])
 
 
+  const addTweet = useCallback((tweet: CreateTweetRequest) => {
+
+    const newTweet: CreateTweetRequest = {
+      idUser: `${idUser}`,
+      usernameAuthorTweet: `${usernameUser}`,
+      nameUser: `${nameAuthorTweet}`,
+      content: tweet.content,
+      token: token!
+    }
+
+    async function createTweet() {
+      const response = await create(newTweet)
+
+      if (response.code !== 201) {
+        setError(response.message!)
+        return;
+      }
+
+      setError('')
+      setNewTweet(response.data!)
+    }
+    createTweet()
+  }, [])
+
   return (
     <>
       <div style={{ display: "flex" }}>
-        <LayoutDefault />
+        <>
+          <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
+            idUser: idUser,
+            nameUser: nameAuthorTweet,
+            usernameAuthorTweet: usernameUser,
+            content: contentNewTeet,
+            token: token!
+          })} message={contentNewTeet}>
+          </ModalTweetDefault>
+          <div>
+            <C.ContatinerLayoutDefault>
+              <C.ContainerSideBarDefault>
+                <Sidebar>
+                  <div className="logoSideBar">
+                    <img style={{ height: '35px', width: '100px' }} src={logoGrowTweet}></img>
+                  </div>
+                  <TogleMenu>
+                    <ButtonTogleMenuStyled onClick={handleOpen} className='buttonTweet' type='button'>Tweetar</ButtonTogleMenuStyled>
+                  </TogleMenu>
+                </Sidebar>
+              </C.ContainerSideBarDefault>
+              <C.ContainerFooter>
+                <FooterSideBar avatar={''}>
+                </FooterSideBar>
+              </C.ContainerFooter>
+            </C.ContatinerLayoutDefault>
+          </div >
+        </>
         <FeedBox>
           <HeaderPage title={'Página Inicial'} />
           {!allTweets ? <></> :
             allTweets.map((tweeets) => (
-              <CardTweet key={tweeets.usernameUser} avatar={tweeets.avatar} nameUser={tweeets.nameUser} usernameUser={tweeets.usernameUser} message={tweeets.message}></CardTweet>
+              <CardTweet key={tweeets.idUser} ></CardTweet>
             ))}
         </FeedBox>
         <SideExplorer>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import apiService, { ResponseApi } from "./api.service";
+import apiService, { ResponseApiUser } from "./api.service";
 
 interface LoginRequest {
     username: string;
@@ -14,7 +14,7 @@ export interface CadastroRequest {
 }
 
 
-export async function login(objlogin: LoginRequest): Promise<ResponseApi> {
+export async function login(objlogin: LoginRequest): Promise<ResponseApiUser> {
     try {
         const response = await apiService.post("/auth/login", objlogin)
 
@@ -34,7 +34,7 @@ export async function login(objlogin: LoginRequest): Promise<ResponseApi> {
     }
 }
 
-export async function logout(token: string): Promise<ResponseApi> {
+export async function logout(token: string): Promise<ResponseApiUser> {
     try {
         const response = await apiService.get("/auth/logout", {
             headers: {
@@ -58,7 +58,7 @@ export async function logout(token: string): Promise<ResponseApi> {
     }
 }
 
-export async function cadastro(objCadastro: CadastroRequest): Promise<ResponseApi> {
+export async function cadastro(objCadastro: CadastroRequest): Promise<ResponseApiUser> {
     try {
         const response = await apiService.post('/users', objCadastro)
         console.log(response)

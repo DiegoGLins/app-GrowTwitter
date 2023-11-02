@@ -17,7 +17,6 @@ min-height: 100vh;
 min-width: 100%;
 display: flex;
 flex-direction: column;
-position: relative;
 justify-content: flex-start;
 `
 export const ContainerFooter = styled.div`
@@ -28,7 +27,6 @@ margin: 0;
 padding: 0;
 display: flex;
 flex-direction: column;
-position: relative;
 padding-bottom: 15px;
 justify-content: flex-end
 

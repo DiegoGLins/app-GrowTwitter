@@ -1,4 +1,4 @@
-import { AvatarTweet, CardTweetStyled } from "./CardTweetStyled";
+import { CardTweetStyled } from "./CardTweetStyled";
 import iconeResponder from '/icone_responder.svg'
 import iconeResponderAzul from '/icone_responder_azul.svg'
 import iconeCurtir from '/icone_curtir.svg'
@@ -13,13 +13,17 @@ import iconReTweet from "/icone_retweet.svg"
 import iconReTweetLaranja from '/icone_retweet_laranja.svg'
 
 export interface CardTweetProps {
-    avatar: string;
-    nameUser: string;
-    usernameUser: string;
-    message?: string;
+    idTweet?: string;
+    idUser?: string
+    nameUser?: string
+    usernameAuthorTweet?: string
+    avatar?: string;
+    content?: string;
+    token?: string;
 }
 
-const CardTweet: React.FC<CardTweetProps> = ({ avatar, nameUser, usernameUser, message }) => {
+
+const CardTweet: React.FC<CardTweetProps> = ({ nameUser, usernameAuthorTweet, avatar, content }) => {
     //Aqui vai a logica de curtir e comentar pegando as informações do usuario e do Tweet do ContentContext
 
     const [isHoveredComent, setIsHoveredComent] = useState(false);
@@ -52,15 +56,13 @@ const CardTweet: React.FC<CardTweetProps> = ({ avatar, nameUser, usernameUser, m
     }
     return (
         <CardTweetStyled>
-            <AvatarTweet>
-                <img src={avatar} alt='avatar'></img>
-            </AvatarTweet>
+            <img style={{ height: '35px', width: '35px', borderRadius: '100%', border: '1px solid gold', margin: '10px 5px 5px 15px' }} src={avatar} alt='avatar'></img>
             <div>
                 <div style={{ margin: '15px 0px 5px 12px', display: 'flex', gap: '10px' }}>
-                    <p style={{ maxWidth: '105px', minHeight: '15px', overflow: "visible", display: 'flex', alignItems: 'center' }}><strong style={{ paddingRight: '5px' }}>{`@${nameUser}`}</strong><img style={{ height: '15px', width: '15px' }} src={selo}></img></p>
-                    <p style={{ maxWidth: '105px', minHeight: '15px', overflow: "visible" }}>{usernameUser}</p>
+                    <p style={{ maxWidth: '105px', minHeight: '15px', display: 'flex', alignItems: 'center' }}><strong style={{ paddingRight: '5px' }}>{`@${nameUser}`}</strong><img style={{ height: '15px', width: '15px' }} src={selo}></img></p>
+                    <p style={{ maxWidth: '105px', minHeight: '15px' }}>{usernameAuthorTweet}</p>
                 </div>
-                <p className="styleMessage">{message}</p>
+                <p className="styleMessage">{content}</p>
                 <IconsTweetStyled onClick={() => console.log()} onMouseEnter={handleMouseEnterComent} onMouseLeave={handleMouseLeaveComent}>
                     <IconTweetComent iconResponse={isHoveredComent ? iconeResponderAzul : iconeResponder} count={0}></IconTweetComent>
                 </IconsTweetStyled>
@@ -76,3 +78,4 @@ const CardTweet: React.FC<CardTweetProps> = ({ avatar, nameUser, usernameUser, m
 }
 
 export default CardTweet
+

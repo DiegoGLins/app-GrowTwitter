@@ -14,7 +14,6 @@ const HeaderProfileUser: React.FC = () => {
 
     const token = localStorage.getItem('token')
 
-
     const [userData, setUserData] = useState({
         id: '',
         email: '',

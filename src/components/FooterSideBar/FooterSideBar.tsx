@@ -29,19 +29,9 @@ const FooterSideBar: React.FC<FooterSideBarProps> = ({ avatar }) => {
 
     const token = localStorage.getItem('token')
     const loggedData = localStorage.getItem('userLogged');
-    let dataLogged: loggedType = {
-        id: "",
-        email: "",
-        name: "",
-        username: ""
-    }
 
-    if (loggedData) {
-        dataLogged = JSON.parse(loggedData!)
-    }
 
     async function logoutUser() {
-
         if (loggedData) {
             const response = await logout(token!)
             setAlert(response.message!)
@@ -52,16 +42,20 @@ const FooterSideBar: React.FC<FooterSideBarProps> = ({ avatar }) => {
     }
 
     useEffect(() => {
+        const dataLogged = JSON.parse(loggedData!)
         function getLogged() {
-            setUserData({
-                id: dataLogged.id,
-                email: dataLogged.email,
-                name: dataLogged.name,
-                username: dataLogged.username
+            if (loggedData) {
+                setUserData({
+                    id: dataLogged?.logged.id,
+                    email: dataLogged?.logged.email,
+                    name: dataLogged?.logged.name,
+                    username: dataLogged?.logged.username
+                }
+                );
             }
-            );
         }
         getLogged()
+
     }, [])
 
 
@@ -73,7 +67,7 @@ const FooterSideBar: React.FC<FooterSideBarProps> = ({ avatar }) => {
             </div>
             <div style={{ margin: '5px 0px 0px 10px', gap: '5px' }}>
                 <p style={{ width: '100px', height: '20px', paddingBottom: '5px', overflow: 'visible' }}><strong>{userData?.name}</strong></p>
-                <p style={{ width: '100px', height: '20px' }}>{userData?.username}</p>
+                <p style={{ width: '100px', height: '20px' }}>{`@ ${userData?.username}`}</p>
             </div>
         </FooterSideBarStyled>
     )

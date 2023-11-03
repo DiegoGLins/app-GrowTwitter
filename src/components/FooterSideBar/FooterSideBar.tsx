@@ -66,8 +66,8 @@ const FooterSideBar: React.FC<FooterSideBarProps> = ({ avatar }) => {
                 <FooterButton onClick={logoutUser} className="logout">Sair</FooterButton>
             </div>
             <div style={{ margin: '5px 0px 0px 10px', gap: '5px' }}>
-                <p style={{ width: '100px', height: '20px', paddingBottom: '5px', overflow: 'visible' }}><strong>{userData?.name}</strong></p>
-                <p style={{ width: '100px', height: '20px' }}>{`@ ${userData?.username}`}</p>
+                <p style={{ width: '130px', height: '20px', paddingBottom: '5px', overflow: 'visible' }}><strong>{userData?.name}</strong></p>
+                <p style={{ width: '130px', height: '20px' }}>{`@ ${userData?.username}`}</p>
             </div>
         </FooterSideBarStyled>
     )

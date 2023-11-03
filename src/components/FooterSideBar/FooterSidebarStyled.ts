@@ -3,9 +3,9 @@ import styled from "styled-components";
 export const FooterSideBarStyled = styled.section`
 display: flex;
 align-items: start;
-width: 170px;
+width: 190px;
 height: 110px;
-margin-left: 65px;
+margin-left: 25px;
 font-size: 14px;
 
 p> {

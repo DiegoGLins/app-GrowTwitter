@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { CreateTweetRequest, TweetDto } from './tweet.service';
-// import { UserDto } from './user.service';
 
 const apiService = axios.create({
     baseURL: 'https://api-growtwitter-6edn.onrender.com',

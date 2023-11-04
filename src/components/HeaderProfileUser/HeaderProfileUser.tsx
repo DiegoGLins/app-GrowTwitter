@@ -46,32 +46,6 @@ const HeaderProfileUser: React.FC = () => {
         getLogged()
     }, [])
 
-    // useEffect(() => {
-    //     if (!logged) {
-    //         return
-    //     }
-    //     async function getUser() {
-    //         const response = await listUsers()
-
-    //         if (response.code !== 200) {
-    //             return setError(response.message!)
-    //         }
-    //         //console.log(logged)
-    //         const user = response!.data!
-    //         setUserLogged(user)
-    //         setId(id)
-    //         setNameAuthorTweet(dataContext?.data?.name!)
-    //         setUsernameUser(dataContext?.data?.username!)
-    //         setAvatar(dataContext?.data?.avatar!)
-    //         // console.log(userLogged)
-    //         // setUserLogged(userLogged!.name!)
-    //         console.log(response)
-    //     }
-
-    //     getUser()
-
-
-    // }, [id])
 
     return (
         <>

@@ -5,10 +5,52 @@ export interface UserDto {
     id: string,
     name: string,
     username: string,
-    email: string
     token?: string,
-    avatar?: string
+    avatar?: string;
+    userLiker: any
 }
+
+//id String  @id @db.Uuid @default(uuid())
+//name String @db.VarChar(18)
+//username String @db.VarChar(16) @unique
+//email String @db.VarChar(100) @unique
+//password String @db.VarChar(64)
+//token String? @unique
+//following Follow[] @relation("user_following")
+//followers Follow[] @relation("user_followers")
+//tweets Tweet[]
+//userLiker Liker[]
+
+export interface CadastroRequest {
+    name: string;
+    username: string;
+    email: string;
+    password: string;
+}
+
+
+export async function cadastro(objCadastro: CadastroRequest): Promise<ResponseApiUser> {
+    try {
+        const response = await apiService.post('/users', objCadastro)
+        console.log(response)
+
+        return {
+            ok: response.data?.ok,
+            code: response.data?.code,
+            message: response.data?.message,
+            data: response.data?.data
+        }
+
+    } catch (error: any) {
+        return {
+            ok: error.response.data?.ok,
+            code: error.response.data?.code,
+            message: error.response.data?.message,
+            data: error.response.data?.data
+        }
+    }
+}
+
 
 export async function listUsers(): Promise<ResponseApiUser> {
     try {

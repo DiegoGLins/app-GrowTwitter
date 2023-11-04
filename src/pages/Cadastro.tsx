@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../App.css'
-import { CadastroRequest, cadastro } from '../config/services/auth.service'
 import { useNavigate } from 'react-router-dom'
+import { CadastroRequest, cadastro } from '../config/services/user.service'
 
 const Cadastro: React.FC = () => {
     const navigate = useNavigate()

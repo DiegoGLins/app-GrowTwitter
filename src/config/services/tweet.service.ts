@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import apiService, { ResponseApiTweet, ResponseCreateTweetApi } from "./api.service";
+import { UserDto } from "./user.service";
 
 export interface TweetDto {
     idUser?: string
-    nameUser?: string
+    nameUser: string
     usernameAuthorTweet: string
-    avatar?: string | null;
+    reTweets: TweetDto[]
     content: string;
-    token: string
+    user: UserDto
+    tweeetOriginal: TweetDto
+    type: "N" | "R"
+
 }
 
 export interface CreateTweetRequest {
@@ -75,9 +79,9 @@ export async function listAll(token: string) {
 
         return {
             ok: resposta.data?.ok,
-            message: resposta.data.message,
-            code: resposta.data.code,
-            data: resposta.data.data,
+            message: resposta.data?.message,
+            code: resposta.data?.code,
+            data: resposta.data?.data,
         };
     } catch (error: any) {
         return {
@@ -89,9 +93,9 @@ export async function listAll(token: string) {
     }
 }
 
-export async function listTweetFromUser(data: TweetDto): Promise<ResponseApiTweet> {
+export async function listTweetFromUser(data: UserDto): Promise<ResponseApiTweet> {
     try {
-        const resposta = await apiService.get(`/tweets/fromUser/${data.idUser} `, {
+        const resposta = await apiService.get(`/tweets/fromUser/${data.id} `, {
             headers: {
                 Authorization: data.token
             }

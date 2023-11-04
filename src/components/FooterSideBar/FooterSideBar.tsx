@@ -9,12 +9,6 @@ interface FooterSideBarProps {
     children?: React.ReactNode
 }
 
-interface loggedType {
-    id: string,
-    email: string,
-    name: string
-    username: string
-}
 
 const FooterSideBar: React.FC<FooterSideBarProps> = ({ avatar }) => {
 

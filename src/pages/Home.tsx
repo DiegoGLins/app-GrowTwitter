@@ -24,7 +24,6 @@ const Home: React.FC = () => {
   const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
   const [usernameUser, setUsernameUser] = useState<string>('')
   const [idUser, setIdUser] = useState<string>('')
-  const [tweet, setTweet] = useState<TweetDto[]>([])
   const [newTweet, setNewTweet] = useState<CreateTweetRequest[]>([])
 
   const [error, setError] = useState('');
@@ -55,7 +54,7 @@ const Home: React.FC = () => {
       return
     }
 
-    async function getData() {
+    async function getAllTweets() {
       const response = await listAll(token as string);
 
       if (response.code !== 200) {
@@ -66,8 +65,9 @@ const Home: React.FC = () => {
       setAlert('')
 
       setAllTweets([...allTweets, response.data])
+      console.log(allTweets)
     }
-    getData()
+    getAllTweets()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -130,8 +130,8 @@ const Home: React.FC = () => {
         <FeedBox>
           <HeaderPage title={'Página Inicial'} />
           {!allTweets ? <></> :
-            allTweets.map((tweeets) => (
-              <CardTweet key={tweeets.idUser} ></CardTweet>
+            allTweets.map((tweeets, index) => (
+              <CardTweet key={index} avatar={tweeets.user.avatar!} index={index} tweet={tweeets} reTweet={tweeets}></CardTweet>
             ))}
         </FeedBox>
         <SideExplorer>

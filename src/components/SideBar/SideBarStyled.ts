@@ -4,7 +4,7 @@ export const SideBarStyled = styled.div`
 background-color: #fff;
 min-height: 100vh;
 max-width: 240px;
-margin: 0;
+margin: 0px 10px 0px 0px;
 padding: 0;
 display: flex;
 flex-direction: column;

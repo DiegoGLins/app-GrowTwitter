@@ -9,8 +9,7 @@ import FeedBox from "../components/FeedBox"
 import HeaderProfileUser from "../components/HeaderProfileUser"
 import SideExplorer from "../components/SideExplorer"
 import * as C from '../App.styles'
-import { useNavigate } from "react-router-dom"
-import { CreateTweetRequest, TweetDto, create, listTweetFromUser } from "../config/services/tweet.service"
+import { CreateTweetRequest, TweetDto, create, listAll, listTweetFromUser } from "../config/services/tweet.service"
 import { Box, CircularProgress } from "@mui/material"
 import FooterSideBar from "../components/FooterSideBar"
 import ModalTweetDefault from "../components/ModalTweetDefault"
@@ -21,19 +20,27 @@ import logoGrowTweet from '/logo_growtweet.svg'
 import AlertInfo from "../components/AlertInfo"
 
 const ProfilelUser: React.FC = () => {
-  const navigate = useNavigate()
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
+
   const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
   const [usernameUser, setUsernameUser] = useState<string>('')
   const [idUser, setIdUser] = useState<string>('')
   const [error, setError] = useState('Nenhum tweet para listar');
+
   const [newTweet, setNewTweet] = useState<CreateTweetRequest[]>([])
   const [contentNewTeet, setContentNewtweet] = useState<string>('')
+  const [allTweets, setAllTweets] = useState<TweetDto[]>([])
 
-  const [tweets, setTweets] = useState<TweetDto[]>([])
   const [loading, setLoading] = useState(false)
+  const [userData, setUserData] = useState({
+    id: '',
+    email: '',
+    name: '',
+    username: '',
+  })
 
+  const loggedData = localStorage.getItem('userLogged');
   const token = localStorage.getItem('token')
 
   function handleClose() {
@@ -44,40 +51,9 @@ const ProfilelUser: React.FC = () => {
     setIsOpen(true)
   }
 
-
-  useEffect(() => {
-
-    setLoading(true)
-    if (!token) {
-      return navigate('/')
-    }
-
-    async function getTweets() {
-      const response = await listTweetFromUser({
-        idUser: '',
-        content: '',
-        avatar: '',
-        nameUser: '',
-        usernameAuthorTweet: '',
-        token: token!
-      })
-
-      if (response.code !== 200) {
-        return setError(response.message!)
-      }
-      setLoading(false)
-      setTweets(response.data!.tweets!)
-
-
-    }
-    getTweets()
-  }, [])
-
-
   const addTweet = useCallback((tweet: CreateTweetRequest) => {
 
     if (!token) {
-      navigate('/')
       return;
     }
 
@@ -103,13 +79,56 @@ const ProfilelUser: React.FC = () => {
     createTweet()
   }, [])
 
+
+  useEffect(() => {
+
+    setLoading(true)
+    if (!token) {
+      return
+    }
+
+    function getLogged() {
+      const dataLogged = JSON.parse(loggedData!)
+      if (loggedData) {
+        setUserData({
+          id: dataLogged?.logged.id,
+          email: dataLogged?.logged.email,
+          name: dataLogged?.logged.name,
+          username: dataLogged?.logged.username
+        }
+        );
+      }
+    }
+    getLogged()
+
+    async function getAllTweets() {
+      const response = await listAll(token as string);
+
+      if (response.code !== 200) {
+        setError(response.message)
+        return
+      }
+      setError('')
+
+      setAllTweets([...allTweets, response.data])
+      console.log(allTweets)
+    }
+    getAllTweets()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+
+  const tweetsUserLogged = allTweets.filter((tweet: TweetDto) => tweet.user.id === userData.id)
+  // const contentTweetLogged = tweetsUserLogged.find((item) => item.content)
+
+
   return (
     <div style={{ display: "flex", maxHeight: '100%', overflow: 'auto' }}>
       <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
         idUser: idUser,
         nameUser: nameAuthorTweet,
         usernameAuthorTweet: usernameUser,
-        content: contentNewTeet,
+        content: '',
         token: token!
       })} message={contentNewTeet}>
       </ModalTweetDefault>
@@ -137,8 +156,8 @@ const ProfilelUser: React.FC = () => {
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}>
             <CircularProgress className="styleCircular" />
           </Box>
-          : !tweets.length ? <AlertInfo><strong>{error}</strong></AlertInfo> : tweets.map((item) => (
-            <CardTweet key={item.idUser} avatar={item.avatar!} usernameAuthorTweet={item.usernameAuthorTweet} nameUser={item.nameUser} content={item.content} />
+          : !tweetsUserLogged.length ? <AlertInfo><strong>{error}</strong></AlertInfo> : tweetsUserLogged.map((item, index) => (
+            <CardTweet key={index} tweet={item} reTweet={item} index={index} avatar={item.user.avatar!} />
           ))}
       </FeedBox>
       <SideExplorer>

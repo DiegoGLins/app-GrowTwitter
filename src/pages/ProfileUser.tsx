@@ -28,27 +28,17 @@ const ProfilelUser: React.FC<ProfileUserProps> = ({ avatar }) => {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
 
-  // function handleAvatar(): string {
-  //   const random = Math.random().toString(36).substring(2, 10) + `@${userLoggedData?.username!}`;
-  //   const randomHash = md5(random.toLowerCase().trim());
-  //   const gravatarUrl = `https://robohash.org/${randomHash}.png`;
-
-  //   return gravatarUrl;
-  // }
-
-  // const avatarUser = handleAvatar()
-
   useEffect(() => {
     if (!token) {
       return navigate('/')
 
     }
     setLoading(true)
-    // async function getLogged() {
-    //   const response = await getUserById()
-    //   setUserLoggedData(response.data);
-    // }
-    // getLogged()
+    async function getLogged() {
+      const response = await getUserById()
+      setUserLoggedData(response.data);
+    }
+    getLogged()
 
     async function getTweetsUser() {
       const response = await listTweetFromUser(token as string)
@@ -70,9 +60,9 @@ const ProfilelUser: React.FC<ProfileUserProps> = ({ avatar }) => {
   return (
     <>
       <div style={{ display: "flex", width: '100%' }}>
-        <Sidebar avatar={avatar} />
+        <Sidebar />
         <FeedBox>
-          <HeaderProfileUser avatar={avatar} />
+          <HeaderProfileUser />
           {loading ?
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}>
               <CircularProgress className="styleCircular" />

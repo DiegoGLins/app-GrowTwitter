@@ -54,7 +54,7 @@ const Home: React.FC = () => {
 
   return (
     <div style={{ display: "flex" }}>
-      <Sidebar avatar={userData.avatar} />
+      <Sidebar />
       <FeedBox>
         <HeaderPage title={'Página Inicial'} />
         {!allTweets ? <></> :

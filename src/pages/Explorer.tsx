@@ -8,13 +8,9 @@ const Explorer: React.FC = () => {
 
     return (
         <div style={{ display: "flex", maxHeight: '100%', overflow: 'auto' }}>
-            <div style={{ display: "flex" }}>
-                <div>
-                    <Sidebar avatar={""} />
-                </div >
-            </div>
+            <Sidebar />
             <FeedBox>
-                <HeaderPage title={'Explorar'}></HeaderPage>
+                <HeaderPage title={'Explorar'} />
                 <div style={{ margin: '25px' }}>
                     <h4><strong>O que está acontecendo ?</strong></h4>
                     <h5 style={{ color: 'gray', paddingTop: '15px' }}>Esportes - Há 45 minutos</h5>

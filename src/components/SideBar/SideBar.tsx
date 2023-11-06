@@ -13,14 +13,10 @@ import iconeExplorar from '/icone_explorar.svg'
 import iconePerfilSelecionado from '/icone_perfil_selecionado.svg'
 import IconTogleMenu from '../IconTogleMenu'
 import { logout } from "../../config/services/auth.service"
-import md5 from "md5"
-import { UserDto, getUserById } from "../../config/services/user.service"
+import { getUserById } from "../../config/services/user.service"
 
-interface SideBarProps {
-    avatar?: string
-}
 
-const Sidebar: React.FC<SideBarProps> = ({ avatar }) => {
+const Sidebar: React.FC = () => {
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
@@ -120,7 +116,13 @@ const Sidebar: React.FC<SideBarProps> = ({ avatar }) => {
     useEffect(() => {
         async function getLogged() {
             const response = await getUserById()
-            setUserData(response.data);
+            setUserData({
+                id: response.data?.id,
+                avatar: response.data?.avatar,
+                email: response.data?.email,
+                name: response.data?.name,
+                username: response.data?.username
+            });
 
         }
         getLogged()
@@ -161,10 +163,10 @@ const Sidebar: React.FC<SideBarProps> = ({ avatar }) => {
                     <div className="styleFooter">
                         <div style={{ margin: '5px 0px 0px 5px', display: 'flex', flexDirection: 'column' }}>
                             <img style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="avatarFooter" src={avatarUser} alt='avatar-footer'></img>
-                            <button onClick={logoutUser} className="logout">Sair</button>
+                            <button onClick={logoutUser} className="buttonlogout"><strong>Sair</strong></button>
                         </div>
-                        <div style={{ margin: '5px 0px 0px 10px', gap: '15px', display: 'flex', flexDirection: "column" }}>
-                            <p style={{ width: '130px', height: '20px', padding: '0px 0px 5px 5px', overflow: 'visible' }}><strong>{userData?.name}</strong></p>
+                        <div style={{ margin: '0px 0px 40px 8px', display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                            <p style={{ width: '130px', height: '20px', padding: '0px 0px 0px 5px' }}><strong>{userData?.name}</strong></p>
                             <p style={{ width: '130px', height: '20px' }}>{`@ ${userData?.username}`}</p>
                         </div>
                     </div>

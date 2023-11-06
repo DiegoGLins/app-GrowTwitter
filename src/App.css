@@ -139,7 +139,7 @@ body {
   width: 45px;
   height: 45px;
   border-radius: 100%;
-  border: 1px solid gold;
+  border: 2px solid #666666;
   margin-bottom: 5px;
   justify-content: center;
   align-items: center;
@@ -152,12 +152,13 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  padding-bottom: 15px;
-  justify-content: flex-end
+  padding-bottom: 25px;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 
-.logout {
+.buttonlogout {
   background-color: #fff;
   justify-content: flex-end;
   align-items: start;
@@ -167,9 +168,10 @@ body {
   width: 30px;
   font-size: 14px;
   font-style: bold;
+  padding: 0px 0px 8px 10px;
 }
 
-.logout:hover {
+.buttonlogout:hover {
   transform: scale(1.2, 1.2);
   color: #1d9bf0;
 }

@@ -1,25 +1,16 @@
-
 import CardExplorer from "../components/CardExplorer"
 import FeedBox from "../components/FeedBox"
-import FooterSideBar from "../components/FooterSideBar"
 import HeaderPage from "../components/HeaderPage"
 import Sidebar from "../components/SideBar"
-import * as C from '../App.styles'
 import SideExplorer from "../components/SideExplorer"
 
-
 const Explorer: React.FC = () => {
-
 
     return (
         <div style={{ display: "flex", maxHeight: '100%', overflow: 'auto' }}>
             <div style={{ display: "flex" }}>
                 <div>
-                    <Sidebar>
-                        <C.ContainerFooter>
-                            <FooterSideBar avatar={''} />
-                        </C.ContainerFooter>
-                    </Sidebar>
+                    <Sidebar avatar={""} />
                 </div >
             </div>
             <FeedBox>

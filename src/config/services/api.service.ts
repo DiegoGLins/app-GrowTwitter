@@ -17,8 +17,8 @@ export interface ResponseApiTweet {
     code?: number;
     message?: string;
     data?: {
-        reTweets: TweetDto | null,
-        tweets: TweetDto | null
+        reTweets?: TweetDto;
+        tweets?: TweetDto
     }
 }
 

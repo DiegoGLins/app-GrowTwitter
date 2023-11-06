@@ -16,13 +16,12 @@ import { TweetDto } from "../../config/services/tweet.service";
 
 export interface CardTweetProps {
     tweet: TweetDto;
-    index: number;
     reTweet?: TweetDto
     avatarTweet: TweetDto
     avatarReTweet: TweetDto
 }
 
-const CardTweet: React.FC<CardTweetProps> = ({ index, tweet, reTweet, avatarTweet, avatarReTweet }) => {
+const CardTweet: React.FC<CardTweetProps> = ({ tweet, reTweet, avatarTweet, avatarReTweet }) => {
 
     const userAvatarTweet = avatarTweet.avatar
     const userAvatarRetweet = avatarReTweet.avatar
@@ -58,7 +57,7 @@ const CardTweet: React.FC<CardTweetProps> = ({ index, tweet, reTweet, avatarTwee
     }
     return (
         <>
-            <CardTweetStyled key={index}>
+            <CardTweetStyled>
                 <div style={{ margin: '15px 0px 5px 12px', display: 'flex', gap: '10px' }}>
                     <img style={{ height: '35px', width: '35px', borderRadius: '100%', border: '1px solid gold', margin: '0px 3px 5px 15px' }} src={userAvatarTweet} alt='avatar'></img>
                     <div>
@@ -78,7 +77,7 @@ const CardTweet: React.FC<CardTweetProps> = ({ index, tweet, reTweet, avatarTwee
                 </div>
             </CardTweetStyled>
             {tweet.tweeetOriginal && (
-                <CardTweetStyled>
+                <CardTweetStyled >
                     <div style={{ margin: '15px 0px 5px 12px', display: 'flex', gap: '10px' }}>
                         <img style={{ height: '25px', width: '25px', borderRadius: '100%', border: '1px solid gold', margin: '0px 3px 5px 15px' }} src={userAvatarRetweet} alt='avatar'></img>
                         <div>

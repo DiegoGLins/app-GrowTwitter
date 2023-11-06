@@ -8,11 +8,10 @@ import selo from '/selo.svg'
 import { useNavigate } from "react-router-dom"
 
 interface HeaderProps {
-    avatar: string
     children?: React.ReactNode
 }
 
-const HeaderProfileUser: React.FC<HeaderProps> = ({ avatar, children }) => {
+const HeaderProfileUser: React.FC<HeaderProps> = ({ children }) => {
     const navigate = useNavigate()
 
     const token = localStorage.getItem('token')
@@ -25,8 +24,16 @@ const HeaderProfileUser: React.FC<HeaderProps> = ({ avatar, children }) => {
         username: '',
     })
 
-    useEffect(() => {
+    const getAvatar = localStorage.getItem('avatar')
 
+    function handleAvatar(): string {
+        const gravatarUrl = `https://robohash.org/${getAvatar}.png`;
+        return gravatarUrl;
+    }
+
+    const avatarUser = handleAvatar()
+
+    useEffect(() => {
         if (!token) {
             return navigate('/')
         }
@@ -38,17 +45,17 @@ const HeaderProfileUser: React.FC<HeaderProps> = ({ avatar, children }) => {
             if (loggedData) {
                 setUserData({
                     id: dataLogged?.looged?.id,
-                    avatar: dataLogged.logged?.avatar,
+                    avatar: '',
                     email: dataLogged?.logged?.email,
                     name: dataLogged?.logged?.name,
                     username: dataLogged?.logged?.username
                 }
                 );
             }
-
         }
         getLogged()
     }, [])
+
 
 
     return (
@@ -58,7 +65,7 @@ const HeaderProfileUser: React.FC<HeaderProps> = ({ avatar, children }) => {
                     <button className="goBack"><img src={iconeSeta}></img></button>
                     <p style={{ padding: '0px 0px 0px 10px' }}> <strong>Perfil de {`@ ${userData.name}`}</strong></p>
                 </div>
-                <AvatarHeaderUser src={avatar} alt="avatarUser"></AvatarHeaderUser>
+                <AvatarHeaderUser src={avatarUser} alt="avatarUser"></AvatarHeaderUser>
                 <p style={{ paddingBottom: '5px', display: 'flex', alignItems: 'center' }}><strong style={{ paddingRight: '5px' }}>{userData.name}</strong><img style={{ height: '15px', width: '15px' }} src={selo}></img></p>
                 <p>{`@ ${userData.username}`}</p>
             </HeaderProfileUserStyled>

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 
+import md5 from 'md5'
 import '../App.css'
 import { login } from '../config/services/auth.service'
 import { useNavigate } from 'react-router-dom'

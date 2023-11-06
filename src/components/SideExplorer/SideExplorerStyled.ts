@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SideExplorerStyled = styled.div`
 background-color: #fff;
-min-height: 100vh;
+max-height: 100%;
 width: 65%;
 margin: 0;
 padding: 0;

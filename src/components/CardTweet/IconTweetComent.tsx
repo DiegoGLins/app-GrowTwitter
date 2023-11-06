@@ -9,7 +9,7 @@ const IconTweetComent: React.FC<IconTweetComentProps> = ({ iconResponse, count, 
 
     return (
         <>
-            <img className='iconsTweet' style={{ height: '18px', width: '18x' }} src={iconResponse} alt="iconTweetComent"></img>
+            <img className='iconsTweet' style={{ height: '15px', width: '15x' }} src={iconResponse} alt="iconTweetComent"></img>
             <div style={{ margin: '0px 0px 0px 8px', fontSize: '16px' }}>{count}</div>
         </>
     )

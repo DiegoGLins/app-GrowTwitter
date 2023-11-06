@@ -16,14 +16,15 @@ display: flex;
 flex-direction: column;
 background-color: #fff;
 color: #000;
-max-width: 100vw;
+width: 100vw;
 height: 160px;
 position: relative;
 font-family: Arial bold, Helvetica, sans-serif;
 border-bottom: 1px solid #e9e9e9;
 border-bottom-style: inset;
-padding: 5px 10px 15px 25px;
+padding: 0px 10px 25px 25px;
 align-items: start;
 justify-content: start;
 background-color: #fff;
+
 `

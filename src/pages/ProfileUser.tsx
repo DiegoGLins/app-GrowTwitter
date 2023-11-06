@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
-
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react"
 import CardExplorer from "../components/CardExplorer"
@@ -9,7 +9,7 @@ import FeedBox from "../components/FeedBox"
 import HeaderProfileUser from "../components/HeaderProfileUser"
 import SideExplorer from "../components/SideExplorer"
 import * as C from '../App.styles'
-import { CreateTweetRequest, TweetDto, create, listAll, listTweetFromUser } from "../config/services/tweet.service"
+import { CreateTweetRequest, TweetDto, listTweetFromUser } from "../config/services/tweet.service"
 import { Box, CircularProgress } from "@mui/material"
 import FooterSideBar from "../components/FooterSideBar"
 import ModalTweetDefault from "../components/ModalTweetDefault"
@@ -18,152 +18,86 @@ import TogleMenu from "../components/TogleMenu"
 import { ButtonTogleMenuStyled } from "../components/TogleMenu/TogleMenuStyled"
 import logoGrowTweet from '/logo_growtweet.svg'
 import AlertInfo from "../components/AlertInfo"
+import { useNavigate } from "react-router-dom"
+import { UserDto, getUserById } from "../config/services/user.service"
+import md5 from 'md5';
 
 const ProfilelUser: React.FC = () => {
+  const navigate = useNavigate()
 
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-
-  const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
-  const [usernameUser, setUsernameUser] = useState<string>('')
-  const [idUser, setIdUser] = useState<string>('')
   const [error, setError] = useState('Nenhum tweet para listar');
-
-  const [newTweet, setNewTweet] = useState<CreateTweetRequest[]>([])
-  const [contentNewTeet, setContentNewtweet] = useState<string>('')
   const [allTweets, setAllTweets] = useState<TweetDto[]>([])
 
   const [loading, setLoading] = useState(false)
-  const [userData, setUserData] = useState({
-    id: '',
-    email: '',
-    name: '',
-    username: '',
-  })
+  const [userLoggedData, setUserLoggedData] = useState<UserDto | null>()
 
-  const loggedData = localStorage.getItem('userLogged');
   const token = localStorage.getItem('token')
 
-  function handleClose() {
-    setIsOpen(false)
+  function handleAvatar(): string {
+    const random = Math.random().toString(36).substring(2, 10) + `@${userLoggedData?.username!}`;
+    const randomHash = md5(random.toLowerCase().trim());
+    const gravatarUrl = `https://robohash.org/${randomHash}.png`;
+
+    return gravatarUrl;
   }
 
-  function handleOpen() {
-    setIsOpen(true)
-  }
-
-  const addTweet = useCallback((tweet: CreateTweetRequest) => {
-
-    if (!token) {
-      return;
-    }
-
-    const newTweet: CreateTweetRequest = {
-      idUser: `${idUser}`,
-      usernameAuthorTweet: `${usernameUser}`,
-      nameUser: `${nameAuthorTweet}`,
-      content: tweet.content,
-      token: token!
-    }
-
-    async function createTweet() {
-      const response = await create(newTweet)
-
-      if (response.code !== 201) {
-        setError(response.message!)
-        return;
-      }
-
-      setError('')
-      setNewTweet(response.data!)
-    }
-    createTweet()
-  }, [])
-
+  const avatarUser = handleAvatar()
 
   useEffect(() => {
-
-    setLoading(true)
     if (!token) {
-      return
-    }
+      return navigate('/')
 
-    function getLogged() {
-      const dataLogged = JSON.parse(loggedData!)
-      if (loggedData) {
-        setUserData({
-          id: dataLogged?.logged.id,
-          email: dataLogged?.logged.email,
-          name: dataLogged?.logged.name,
-          username: dataLogged?.logged.username
-        }
-        );
-      }
+    }
+    setLoading(true)
+    async function getLogged() {
+      const response = await getUserById()
+      setUserLoggedData(response.data);
     }
     getLogged()
 
-    async function getAllTweets() {
-      const response = await listAll(token as string);
-
+    async function getTweetsUser() {
+      const response = await listTweetFromUser(token as string)
       if (response.code !== 200) {
-        setError(response.message)
+        setError(response.message!)
         return
       }
       setError('')
-
-      setAllTweets([...allTweets, response.data])
-      console.log(allTweets)
+      setAllTweets([...allTweets, response?.data?.tweets!])
+      setLoading(false)
+      console.log(allTweets),
+        console.log(userLoggedData)
+      // console.log(allTweets.map(item => item.content))
     }
-    getAllTweets()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getTweetsUser()
+
   }, [])
 
 
-  const tweetsUserLogged = allTweets.filter((tweet: TweetDto) => tweet.user.id === userData.id)
-  // const contentTweetLogged = tweetsUserLogged.find((item) => item.content)
-
-
   return (
-    <div style={{ display: "flex", maxHeight: '100%', overflow: 'auto' }}>
-      <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
-        idUser: idUser,
-        nameUser: nameAuthorTweet,
-        usernameAuthorTweet: usernameUser,
-        content: '',
-        token: token!
-      })} message={contentNewTeet}>
-      </ModalTweetDefault>
-      <div>
-        <C.ContatinerLayoutDefault>
-          <C.ContainerSideBarDefault>
-            <Sidebar>
-              <div className="logoSideBar">
-                <img style={{ height: '35px', width: '100px' }} src={logoGrowTweet}></img>
-              </div>
-              <TogleMenu>
-                <ButtonTogleMenuStyled onClick={handleOpen} className='buttonTweet' type='button'>Tweetar</ButtonTogleMenuStyled>
-              </TogleMenu>
-            </Sidebar>
-          </C.ContainerSideBarDefault>
+    <>
+      <div style={{ display: "flex", maxHeight: '100%', width: '100%' }}>
+        <Sidebar>
           <C.ContainerFooter>
-            <FooterSideBar avatar={''}>
-            </FooterSideBar>
+            <FooterSideBar avatar={avatarUser} />
           </C.ContainerFooter>
-        </C.ContatinerLayoutDefault>
-      </div >
-      <FeedBox>
-        <HeaderProfileUser />
-        {loading ?
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}>
-            <CircularProgress className="styleCircular" />
-          </Box>
-          : !tweetsUserLogged.length ? <AlertInfo><strong>{error}</strong></AlertInfo> : tweetsUserLogged.map((item, index) => (
-            <CardTweet key={index} tweet={item} reTweet={item} index={index} avatar={item.user.avatar!} />
-          ))}
-      </FeedBox>
-      <SideExplorer>
-        <CardExplorer />
-      </SideExplorer>
-    </div>
+        </Sidebar>
+        <FeedBox>
+          <HeaderProfileUser avatar={avatarUser} />
+          {loading ?
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}>
+              <CircularProgress className="styleCircular" />
+            </Box>
+            : !allTweets.length ? <AlertInfo><strong>{error}</strong></AlertInfo> : allTweets.map((item, index) => (
+              <>
+                <CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} /><CardTweet key={index} avatarTweet={item} tweet={item} avatarReTweet={item} index={index} />
+              </>
+            ))}
+        </FeedBox>
+        <SideExplorer>
+          <CardExplorer />
+        </SideExplorer>
+      </div>
+    </>
   )
 }
 

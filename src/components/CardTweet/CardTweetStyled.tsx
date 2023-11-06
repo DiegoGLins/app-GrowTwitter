@@ -4,6 +4,7 @@ export const CardTweetStyled = styled.div`
 max-width: 100%;
 max-height: 100%;
 display: flex;
+flex-direction: column;
 justify-content: start;
 align-items: start;
 background-color: #fff;

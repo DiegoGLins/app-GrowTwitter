@@ -7,20 +7,23 @@ import iconeSeta from '/icone_seta.svg'
 import selo from '/selo.svg'
 import { useNavigate } from "react-router-dom"
 
-const HeaderProfileUser: React.FC = () => {
-    const navigate = useNavigate()
+interface HeaderProps {
+    avatar: string
+    children?: React.ReactNode
+}
 
-    const [avatar, setAvatar] = useState<string>('')
+const HeaderProfileUser: React.FC<HeaderProps> = ({ avatar, children }) => {
+    const navigate = useNavigate()
 
     const token = localStorage.getItem('token')
 
     const [userData, setUserData] = useState({
         id: '',
+        avatar: '',
         email: '',
         name: '',
         username: '',
     })
-
 
     useEffect(() => {
 
@@ -35,6 +38,7 @@ const HeaderProfileUser: React.FC = () => {
             if (loggedData) {
                 setUserData({
                     id: dataLogged?.looged?.id,
+                    avatar: dataLogged.logged?.avatar,
                     email: dataLogged?.logged?.email,
                     name: dataLogged?.logged?.name,
                     username: dataLogged?.logged?.username
@@ -58,6 +62,7 @@ const HeaderProfileUser: React.FC = () => {
                 <p style={{ paddingBottom: '5px', display: 'flex', alignItems: 'center' }}><strong style={{ paddingRight: '5px' }}>{userData.name}</strong><img style={{ height: '15px', width: '15px' }} src={selo}></img></p>
                 <p>{`@ ${userData.username}`}</p>
             </HeaderProfileUserStyled>
+            {children}
         </>
     )
 }

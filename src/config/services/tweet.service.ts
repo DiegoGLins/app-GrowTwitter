@@ -1,16 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import apiService, { ResponseApiTweet, ResponseCreateTweetApi } from "./api.service";
+import { CreateLikeRequest } from "./like.service";
 import { UserDto } from "./user.service";
+// import { UserDto } from "./user.service";
 
 export interface TweetDto {
-    idUser?: string
-    nameUser: string
-    usernameAuthorTweet: string
-    reTweets: TweetDto[]
+    username: string
+    id: string;
     content: string;
-    user: UserDto
-    tweeetOriginal: TweetDto
+    idUser: string
+    name: string
+    avatar: string
     type: "N" | "R"
+    user: UserDto[]
+    reTweets: TweetDto[]
+    likes: CreateLikeRequest[];
+    tweeetOriginal: TweetDto
+
 
 }
 
@@ -35,10 +41,10 @@ export interface DeleteTweetRequest {
 
 export interface ListTweetRequest {
     idTweet: string;
-    content: string;
+    content?: string;
     idUser?: string
     nameUser?: string
-    usernameAuthorTweet: string
+    userNameAuthorTweet?: string
     avatar?: string | null;
     token: string
 }
@@ -69,19 +75,16 @@ export async function create(data: CreateTweetRequest): Promise<ResponseCreateTw
     }
 }
 
-export async function listAll(token: string) {
+export async function listAll(): Promise<ResponseApiTweet> {
     try {
-        const resposta = await apiService.get('/tweets', {
-            headers: {
-                Authorization: token,
-            },
-        });
+        const response = await apiService.get('/tweets', {
+        })
 
         return {
-            ok: resposta.data?.ok,
-            message: resposta.data?.message,
-            code: resposta.data?.code,
-            data: resposta.data?.data,
+            ok: response.data?.ok,
+            message: response.data?.message,
+            code: response.data?.code,
+            data: response.data?.data,
         };
     } catch (error: any) {
         return {
@@ -93,19 +96,19 @@ export async function listAll(token: string) {
     }
 }
 
-export async function listTweetFromUser(data: UserDto): Promise<ResponseApiTweet> {
+export async function listTweetFromUser(token: string): Promise<ResponseApiTweet> {
     try {
-        const resposta = await apiService.get(`/tweets/fromUser/${data.id} `, {
+        const response = await apiService.get(`/tweets/fromUser/`, {
             headers: {
-                Authorization: data.token
+                Authorization: token
             }
         });
 
         return {
-            ok: resposta.data?.ok,
-            code: resposta.data?.code,
-            message: resposta.data?.message,
-            data: resposta.data?.data,
+            ok: response.data?.ok,
+            code: response.data?.code,
+            message: response.data?.message,
+            data: response.data?.data,
         };
     } catch (error: any) {
         return {
@@ -120,17 +123,17 @@ export async function listTweetFromUser(data: UserDto): Promise<ResponseApiTweet
 export async function listById(data: ListTweetRequest): Promise<ResponseApiTweet> {
     try {
 
-        const resposta = await apiService.get(`/tweets/${data.idTweet} `, {
+        const response = await apiService.get(`/tweets/${data.idTweet} `, {
             headers: {
                 Authorization: data.token
             }
         });
 
         return {
-            ok: resposta.data?.ok,
-            message: resposta.data?.message,
-            code: resposta.data?.code,
-            data: resposta.data?.data,
+            ok: response.data?.ok,
+            message: response.data?.message,
+            code: response.data?.code,
+            data: response.data?.data,
         };
     } catch (error: any) {
         return {
@@ -146,17 +149,17 @@ export async function update(data: UpdateTweetRequest): Promise<ResponseApiTweet
     try {
         const body = { tweet: data.content };
 
-        const resposta = await apiService.put(`/tweets/${data.idTweet}`, body, {
+        const response = await apiService.put(`/tweets/${data.idTweet}`, body, {
             headers: {
                 Authorization: data.token,
             },
         });
 
         return {
-            ok: resposta.data?.ok,
-            code: resposta.data?.code,
-            message: resposta.data?.message,
-            data: resposta.data?.data,
+            ok: response.data?.ok,
+            code: response.data?.code,
+            message: response.data?.message,
+            data: response.data?.data,
         };
     } catch (error: any) {
         return {
@@ -170,17 +173,17 @@ export async function update(data: UpdateTweetRequest): Promise<ResponseApiTweet
 
 export async function deleteTweet(data: DeleteTweetRequest): Promise<ResponseApiTweet> {
     try {
-        const resposta = await apiService.delete(`/tweets/${data.idTweet} `, {
+        const response = await apiService.delete(`/tweets/${data.idTweet} `, {
             headers: {
                 Authorization: data.token
             }
         });
 
         return {
-            ok: resposta.data?.ok,
-            message: resposta.data?.message,
-            code: resposta.data?.code,
-            data: resposta.data?.data,
+            ok: response.data?.ok,
+            message: response.data?.message,
+            code: response.data?.code,
+            data: response.data?.data,
         };
     } catch (error: any) {
         return {

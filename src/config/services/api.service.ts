@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { CreateTweetRequest, TweetDto } from './tweet.service';
+import { CreateLikeRequest } from './like.service';
 
 const apiService = axios.create({
     baseURL: 'https://api-growtwitter-6edn.onrender.com',
@@ -16,10 +17,17 @@ export interface ResponseApiTweet {
     code?: number;
     message?: string;
     data?: {
-        reTweets: any | null,
-        tweets: TweetDto[] | null
+        reTweets: TweetDto | null,
+        tweets: TweetDto | null
     }
 }
+
+apiService.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    config.headers.Authorization = token ? token : "";
+    return config;
+});
+
 
 export interface ResponseCreateTweetApi {
     ok?: boolean;
@@ -33,6 +41,13 @@ export interface ResponseApiUser {
     code?: number;
     message?: string;
     data?: any
+}
+
+export interface ResponseLikeApi {
+    ok?: boolean;
+    code?: number;
+    message?: string
+    data?: CreateLikeRequest[]
 }
 
 

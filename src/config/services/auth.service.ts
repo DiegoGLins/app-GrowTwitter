@@ -6,6 +6,7 @@ interface LoginRequest {
     password: string
 }
 
+
 export async function login(objlogin: LoginRequest): Promise<ResponseApiUser> {
     try {
         const response = await apiService.post("/auth/login", objlogin)

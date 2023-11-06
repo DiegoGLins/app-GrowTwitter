@@ -1,21 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 
-import { useState } from 'react'
 import '../App.css'
 import { login } from '../config/services/auth.service'
 import { useNavigate } from 'react-router-dom'
-import { UserDto } from '../config/services/user.service'
 
 const Login: React.FC = () => {
-
-    const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
-    const [usernameUser, setUsernameUser] = useState<string>('')
-    const [id, setId] = useState<string>('')
-    const [userLogged, setUserLogged] = useState<UserDto[]>([])
-    const [avatar, setAvatar] = useState<string>('')
-    const [error, setError] = useState('');
-
 
     const navCadastro = (url: string) => {
         navigate(url)

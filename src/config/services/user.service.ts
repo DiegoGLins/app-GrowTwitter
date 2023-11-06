@@ -1,25 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import apiService, { ResponseApiUser } from "./api.service"
+import { CreateLikeRequest } from "./like.service";
 
 export interface UserDto {
-    id: string,
+    id?: string,
     name: string,
     username: string,
     token?: string,
-    avatar?: string;
-    userLiker: any
+    avatar: string;
+    userLiker?: CreateLikeRequest[]
 }
 
-//id String  @id @db.Uuid @default(uuid())
-//name String @db.VarChar(18)
-//username String @db.VarChar(16) @unique
-//email String @db.VarChar(100) @unique
-//password String @db.VarChar(64)
-//token String? @unique
-//following Follow[] @relation("user_following")
-//followers Follow[] @relation("user_followers")
-//tweets Tweet[]
-//userLiker Liker[]
 
 export interface CadastroRequest {
     name: string;
@@ -32,7 +23,6 @@ export interface CadastroRequest {
 export async function cadastro(objCadastro: CadastroRequest): Promise<ResponseApiUser> {
     try {
         const response = await apiService.post('/users', objCadastro)
-        console.log(response)
 
         return {
             ok: response.data?.ok,
@@ -76,13 +66,11 @@ export async function listUsers(): Promise<ResponseApiUser> {
 }
 
 
-export async function listUsersById(idUser: string): Promise<ResponseApiUser> {
+export async function getUserById(): Promise<ResponseApiUser> {
     try {
-        const body = idUser
+        const token = localStorage.getItem('token')
         const response = await apiService.get(`/users/byId`, {
-            data: {
-                body
-            }
+            headers: { Authorization: token }
         })
 
         return {

@@ -2,29 +2,28 @@
 import apiService, { ResponseApiTweet, ResponseCreateTweetApi } from "./api.service";
 import { CreateLikeRequest } from "./like.service";
 import { UserDto } from "./user.service";
+// import { CreateLikeRequest } from "./like.service";
+// import { UserDto } from "./user.service";
 // import { UserDto } from "./user.service";
 
 export interface TweetDto {
-    username: string
     id: string;
     content: string;
-    idUser: string
-    name: string
-    avatar: string
-    type: "N" | "R"
-    user: UserDto[]
-    reTweets: TweetDto[]
+    idUser: string;
+    authorTweet: string;
+    avatarTweet?: string
     likes: CreateLikeRequest[];
-    tweeetOriginal: TweetDto
-
+    type?: "N" | "R"
+    tweeetOriginal?: TweetDto
+    reTweets: TweetDto[]
+    user: UserDto
 
 }
 
 export interface CreateTweetRequest {
-    idUser?: string;
-    nameUser?: string;
-    usernameAuthorTweet?: string
     content: string;
+    type: "N" | "R";
+    usernameAuthorTweet?: string
     token: string
 }
 
@@ -98,7 +97,7 @@ export async function listAll(): Promise<ResponseApiTweet> {
 
 export async function listTweetFromUser(token: string): Promise<ResponseApiTweet> {
     try {
-        const response = await apiService.get(`/tweets/fromUser/`, {
+        const response = await apiService.get(`/tweets/fromUser`, {
             headers: {
                 Authorization: token
             }
@@ -108,7 +107,7 @@ export async function listTweetFromUser(token: string): Promise<ResponseApiTweet
             ok: response.data?.ok,
             code: response.data?.code,
             message: response.data?.message,
-            data: response.data?.data,
+            data: response.data?.data?.tweets,
         };
     } catch (error: any) {
         return {

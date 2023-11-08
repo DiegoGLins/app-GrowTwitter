@@ -59,7 +59,7 @@ const Home: React.FC = () => {
         <HeaderPage title={'Página Inicial'} />
         {!allTweets ? <></> :
           allTweets.map((item) => (
-            <CardTweet tweet={item} avatarTweet={item} avatarReTweet={item}></CardTweet>
+            <CardTweet tweet={item.content} avatarTweet={item} avatarReTweet={item}></CardTweet>
           ))}
       </FeedBox>
       <SideExplorer>

@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { CreateTweetRequest, create } from "../../config/services/tweet.service"
 import { IconTogleMenuStyled } from "../IconTogleMenu/IconTogleMenuStyled"
 import ModalTweetDefault from "../ModalTweetDefault"
@@ -23,7 +24,6 @@ const Sidebar: React.FC = () => {
     const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
     const [userNameUser, setUserNameUser] = useState<string>('')
     const [idUser, setIdUser] = useState<string>('')
-    const [error, setError] = useState('Nenhum tweet para listar');
     const [newTweet, setNewTweet] = useState<CreateTweetRequest[]>([])
     const [contentNewTeet, setContentNewtweet] = useState<string>('')
     const [contentTweet, setContentTweet] = useState<string>('')
@@ -38,12 +38,15 @@ const Sidebar: React.FC = () => {
     const token = localStorage.getItem('token')
 
 
-    function handleAvatar(): string {
-        const random = Math.random().toString(36).substring(2, 10) + `@${userData.username}`;
-        const gravatarUrl = `https://robohash.org/${random}.png`;
-        return gravatarUrl;
-    }
-    handleAvatar()
+    useCallback(() => {
+        function handleAvatar(): string {
+            const random = Math.random().toString(36).substring(2, 10) + `@${userData.username}`;
+            const gravatarUrl = `https://robohash.org/${random}.png`;
+            return gravatarUrl;
+        }
+        handleAvatar()
+    }, [])
+
 
     const avatarStorage = localStorage.getItem('avatar')
     function getAvatar(): string {
@@ -80,22 +83,19 @@ const Sidebar: React.FC = () => {
         }
 
         const newTweet: CreateTweetRequest = {
-            idUser: `${idUser}`,
-            usernameAuthorTweet: `${userNameUser}`,
-            nameUser: `${nameAuthorTweet}`,
             content: tweet.content,
-            token: token!
+            type: tweet.type,
+            usernameAuthorTweet: tweet.usernameAuthorTweet,
+            token: tweet.token
         }
 
         async function createTweet() {
             const response = await create(newTweet)
 
             if (response.code !== 201) {
-                setError(response.message!)
+                alert(response.message!)
                 return;
             }
-
-            setError('')
             setNewTweet(response.data!)
         }
         createTweet()
@@ -104,6 +104,7 @@ const Sidebar: React.FC = () => {
 
     async function logoutUser() {
         if (token) {
+            console.log(token)
             const response = await logout(token)
             alert(response.message!)
             localStorage.setItem('userLogged', '')
@@ -136,11 +137,9 @@ const Sidebar: React.FC = () => {
     return (
         <>
             <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
-                idUser: idUser,
-                nameUser: nameAuthorTweet,
-                usernameAuthorTweet: userNameUser,
-                content: '',
-                token: token!
+                content: "",
+                type: "N",
+                token: ""
             })} message={contentNewTeet}>
             </ModalTweetDefault>
             <div>
@@ -161,13 +160,15 @@ const Sidebar: React.FC = () => {
                         </TogleMenuStyled>
                     </div>
                     <div className="styleFooter">
-                        <div style={{ margin: '5px 0px 0px 5px', display: 'flex', flexDirection: 'column' }}>
-                            <img style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="avatarFooter" src={avatarUser} alt='avatar-footer'></img>
-                            <button onClick={logoutUser} className="buttonlogout"><strong>Sair</strong></button>
-                        </div>
-                        <div style={{ margin: '0px 0px 40px 8px', display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                            <p style={{ width: '130px', height: '20px', padding: '0px 0px 0px 5px' }}><strong>{userData?.name}</strong></p>
-                            <p style={{ width: '130px', height: '20px' }}>{`@ ${userData?.username}`}</p>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <div style={{ margin: '0px 0px 0px 8px', display: 'flex', flexDirection: 'column' }}>
+                                <img style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="avatarFooter" src={avatarUser} alt='avatar-footer'></img>
+                                <button onClick={logoutUser} className="buttonlogout"><strong>Sair</strong></button>
+                            </div>
+                            <div style={{ margin: '0px 0px 0px 5px', display: 'flex', flexDirection: "column" }}>
+                                <p style={{ width: '130px', maxHeight: '35px', padding: '0px 0px 0px 5px' }}><strong>{userData?.name}</strong></p>
+                                <p style={{ width: '130px', maxHeight: '35px' }}>{`@ ${userData?.username}`}</p>
+                            </div>
                         </div>
                     </div>
                 </SideBarStyled>

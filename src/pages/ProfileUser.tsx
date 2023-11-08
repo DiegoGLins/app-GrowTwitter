@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 
@@ -11,27 +12,22 @@ import { TweetDto, listTweetFromUser } from "../config/services/tweet.service"
 import { Box, CircularProgress } from "@mui/material"
 import AlertInfo from "../components/AlertInfo"
 import { useNavigate } from "react-router-dom"
-import { UserDto, getUserById } from "../config/services/user.service"
-// import md5 from 'md5';
 import Sidebar from "../components/SideBar"
+import { UserDto, getUserById } from "../config/services/user.service"
 
-interface ProfileUserProps {
-  avatar: string
-}
+const ProfilelUser: React.FC = () => {
 
-const ProfilelUser: React.FC<ProfileUserProps> = ({ avatar }) => {
-
+  const navigate = useNavigate()
   const [error, setError] = useState('Nenhum tweet para listar');
   const [tweetsUser, setTweetsUser] = useState<TweetDto[]>([])
   const [loading, setLoading] = useState(false)
-  const [userLoggedData, setUserLoggedData] = useState<UserDto | null>()
-  const navigate = useNavigate()
+  const [userLoggedData, setUserLoggedData] = useState<UserDto | null>(null)
+
   const token = localStorage.getItem('token')
 
   useEffect(() => {
     if (!token) {
       return navigate('/')
-
     }
     setLoading(true)
     async function getLogged() {
@@ -43,18 +39,19 @@ const ProfilelUser: React.FC<ProfileUserProps> = ({ avatar }) => {
     async function getTweetsUser() {
       const response = await listTweetFromUser(token as string)
       if (response.code !== 200) {
-        setError(response.message!)
+        setError(response?.message!)
         return
       }
       setError('')
-      setTweetsUser([...tweetsUser, response?.data?.tweets!])
+      setTweetsUser(response?.data!)
       setLoading(false)
-      console.log(tweetsUser)
+
     }
     getTweetsUser()
     // console.log(userLoggedData)
-    // console.log(allTweets.map(item => item.content))
+
   }, [])
+  console.log(tweetsUser)
 
 
   return (
@@ -68,9 +65,7 @@ const ProfilelUser: React.FC<ProfileUserProps> = ({ avatar }) => {
               <CircularProgress className="styleCircular" />
             </Box>
             : !tweetsUser.length ? <AlertInfo><strong>{error}</strong></AlertInfo> : tweetsUser.map((item) => (
-              <>
-                <CardTweet key={item.id} avatarTweet={item} tweet={item} avatarReTweet={item} />
-              </>
+              <CardTweet key={item.id} authorTweet={item.authorTweet} content={item.content} name={item.user.name} avatar={item.avatarTweet!} />
             ))}
         </FeedBox>
         <SideExplorer>

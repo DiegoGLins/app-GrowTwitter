@@ -27,6 +27,7 @@ const Cadastro: React.FC = () => {
         }
 
         if (response.code === 201) {
+            alert(response.message)
             navigate('/')
         }
     }
@@ -55,7 +56,7 @@ const Cadastro: React.FC = () => {
                         <label>Password</label>
                         <input onChange={(e) => setUser({ ...user, password: e.target.value })} type="password" required />
                         <button className='styleButton' type="submit" >Cadastrar</button>
-                        <div className='cadastro'>Já tem conta ? <button className='cadastroLink' onClick={() => navHome('/')}>Fazer login</button></div>
+                        <div className='cadastro'>Já tem conta ? <button className='cadastroLink' onClick={() => navHome('/')}><strong>Fazer login</strong></button></div>
                     </form>
                 </div>
             </div>

@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react"
 import { AvatarHeaderUser, HeaderProfileUserStyled } from "./HeaderProfileUserStyled"
 import iconeSeta from '/icone_seta.svg'
+import iconSetaOrange from '/icone_seta_orange.svg'
 import selo from '/selo.svg'
 import { useNavigate } from "react-router-dom"
 
@@ -15,6 +16,16 @@ const HeaderProfileUser: React.FC<HeaderProps> = ({ children }) => {
     const navigate = useNavigate()
 
     const token = localStorage.getItem('token')
+
+    const [isHoveredArrow, setIsHoveredArrow] = useState(false);
+    const handleMouseEnterArrow = () => {
+        setIsHoveredArrow(true);
+    };
+
+    const handleMouseLeaveArrow = () => {
+        setIsHoveredArrow(false);
+    };
+
 
     const [userData, setUserData] = useState({
         id: '',
@@ -62,7 +73,7 @@ const HeaderProfileUser: React.FC<HeaderProps> = ({ children }) => {
         <>
             <HeaderProfileUserStyled>
                 <div style={{ display: "flex", padding: '0px 10px 10px 0px' }}>
-                    <button className="goBack"><img src={iconeSeta}></img></button>
+                    <button className="goBack"><img style={{ height: '14px', width: '16px' }} onMouseEnter={handleMouseEnterArrow} onMouseLeave={handleMouseLeaveArrow} src={isHoveredArrow ? iconSetaOrange : iconeSeta}></img></button>
                     <p style={{ padding: '0px 0px 0px 10px' }}> <strong>Perfil de {`@ ${userData.name}`}</strong></p>
                 </div>
                 <AvatarHeaderUser src={avatarUser} alt="avatarUser"></AvatarHeaderUser>

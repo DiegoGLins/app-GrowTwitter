@@ -14,10 +14,10 @@ margin-top: 12px;
 `
 
 export const ButtonTogleMenuStyled = styled.button`
-background-color: #1d9bf0;
+background-color: ${(props) => props.theme.colors.button};
 width: 180px;
 height: 35px;
-color: #fff;
+color:${(props) => props.theme.colors.textSecondary};
 border-radius: 18px;
 font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 font-size: 16px;

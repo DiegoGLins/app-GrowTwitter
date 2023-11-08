@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 
-import md5 from 'md5'
 import '../App.css'
 import { login } from '../config/services/auth.service'
 import { useNavigate } from 'react-router-dom'
@@ -59,7 +58,7 @@ const Login: React.FC = () => {
                         <label>Password</label>
                         <input id='password' type="password" required />
                         <button className='styleButton' type="submit">Entrar</button>
-                        <div className='cadastro'>Ainda não tem conta ?  <button onClick={() => navCadastro('/cadastro')} className='cadastroLink'>Cadastre-se</button></div>
+                        <div className='cadastro'>Ainda não tem conta ?  <button onClick={() => navCadastro('/cadastro')} className='cadastroLink'><strong>Cadastre-se</strong></button></div>
                     </form>
                 </div>
             </div>

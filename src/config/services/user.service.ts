@@ -4,10 +4,11 @@ import { CreateLikeRequest } from "./like.service";
 
 export interface UserDto {
     id?: string,
+    avatar: string;
     name: string,
+    email?: string
     username: string,
     token?: string,
-    avatar: string;
     userLiker?: CreateLikeRequest[]
 }
 

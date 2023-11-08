@@ -34,7 +34,7 @@
 .styleInputBox {
   padding: 30px 0px 10px;
   justify-content: start;
-  padding: 5px 40px 30px;
+  padding: 5px 40px 40px;
   justify-content: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: #fff;
@@ -57,7 +57,7 @@
 
 .styleInputs {
   justify-content: center;
-  padding: 30px 10px 30px;
+  padding: 30px 10px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -212,4 +212,61 @@ body {
   min-height: 15px;
   color: #000;
   font-size: 14px;
+}
+
+
+:root {
+  --size: 15px;
+  --corFundo: #1e95ff;
+  --corAzul: #1d9bf0;
+  --corCiano: #6bb3e3;
+  --corCeleste: #92bdda;
+
+}
+
+.loading {
+  --animacao: 1100ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading .bolinha {
+
+  --item-size: calc(var(--size) / 4);
+  width: var(--item-size);
+  height: var(--item-size);
+  display: inline-block;
+  margin: 0 1px;
+  border-radius: 50%;
+  border: 3px solid var(--clr-spinner);
+  animation: spinner-bolinha var(--animacao) ease-in-out infinite;
+}
+
+@keyframes spinner-bolinha {
+  0%, 100% {
+    transform: translateY(40%);
+  }
+
+  50% {
+    transform: translateY(-40%);
+  }
+}
+
+.loading .bolinha:nth-child(2) {
+  --clr-spinner: var(--corCeleste);
+  animation-delay: calc(var(--animacao) / 6 * -1);
+  background-color: #92bdda;
+}
+
+.loading .bolinha:nth-child(3) {
+  --clr-spinner: var(--corCiano);
+  animation-delay: calc(var(--animacao) / 6 * -2);
+  background-color: #6bb3e3
+}
+
+.loading .bolinha:nth-child(4) {
+  --clr-spinner: var(--corAzul);
+  animation-delay: calc(var(--animacao) / 6 * -3);
+  background-color: #1d9bf0
 }

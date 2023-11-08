@@ -4,9 +4,8 @@ import { CreateTweetRequest, TweetDto } from './tweet.service';
 import { CreateLikeRequest } from './like.service';
 
 
-//'https://api-growtwitter-6edn.onrender.com
 const apiService = axios.create({
-    baseURL: 'http://localhost:3333',
+    baseURL: 'https://api-growtwitter-6edn.onrender.com',
     headers: {
         Authorization: localStorage.getItem('token')
     }

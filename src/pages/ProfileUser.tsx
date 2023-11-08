@@ -42,7 +42,10 @@ const ProfilelUser: React.FC = () => {
         setError(response?.message!)
         return
       }
-      setError('')
+
+      if (response.data === null) {
+        setError(response?.message!)
+      }
       setTweetsUser(response?.data!)
       setLoading(false)
 
@@ -65,7 +68,7 @@ const ProfilelUser: React.FC = () => {
               <CircularProgress className="styleCircular" />
             </Box>
             : !tweetsUser.length ? <AlertInfo><strong>{error}</strong></AlertInfo> : tweetsUser.map((item) => (
-              <CardTweet key={item.id} authorTweet={item.authorTweet} content={item.content} name={item.user.name} avatar={item.avatarTweet!} />
+              <CardTweet key={item.id} authorTweet={item.authorTweet} content={item.content} name={userLoggedData?.name!} avatar={item.avatarTweet!} />
             ))}
         </FeedBox>
         <SideExplorer>

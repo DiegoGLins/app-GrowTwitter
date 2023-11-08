@@ -65,11 +65,12 @@ const CardTweet: React.FC<CardTweetProps> = ({ content, avatar, name, authorTwee
         <>
             <CardTweetStyled>
                 <div style={{ margin: '15px 15px 5px 12px', display: 'flex', gap: '10px' }}>
-                    <img style={{ height: '35px', width: '35px', borderRadius: '100%', border: '2px solid #ff8533', margin: '0px 3px 5px 15px' }} src={avatar} alt='avatar'></img>
+                    <img style={{ height: '35px', width: '35px', borderRadius: '100%', border: '2px solid #ff8533', margin: '3px 3px 5px 15px' }} src={avatar} alt='avatar'></img>
                     <div>
                         <p style={{ maxWidth: '105px', minHeight: '15px', display: 'flex', alignItems: 'center' }}><strong style={{ paddingRight: '5px' }}>{authorTweet}</strong>
-                            <img style={{ height: '15px', width: '15px' }} src={selo}></img></p>
-                        <p style={{ maxWidth: '135px', minHeight: '15px' }}>{name}</p>
+                            <img style={{ height: '15px', width: '15px' }} src={selo}></img>
+                        </p>
+                        <p style={{ maxWidth: '135px', minHeight: '15px', paddingTop: '4px' }}>{name}</p>
                         <p className="styleMessage">{content}</p>
                         <IconsTweetStyled onClick={() => console.log()} onMouseEnter={handleMouseEnterComent} onMouseLeave={handleMouseLeaveComent}>
                             <IconTweetComent iconResponse={isHoveredComent ? iconeResponderAzul : iconeResponder} count={0}></IconTweetComent>

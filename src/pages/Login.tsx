@@ -74,7 +74,7 @@ const Login: React.FC = () => {
                             onClick={handleLoading}
                             className="styleButton"
                             type="submit"
-                            disabled={loading}
+                            disabled={loading ? true : false}
                         >
                             Entrar
                         </button>

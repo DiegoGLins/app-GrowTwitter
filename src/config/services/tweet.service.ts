@@ -2,9 +2,6 @@
 import apiService, { ResponseApiTweet, ResponseCreateTweetApi } from "./api.service";
 import { CreateLikeRequest } from "./like.service";
 import { UserDto } from "./user.service";
-// import { CreateLikeRequest } from "./like.service";
-// import { UserDto } from "./user.service";
-// import { UserDto } from "./user.service";
 
 export interface TweetDto {
     id: string;

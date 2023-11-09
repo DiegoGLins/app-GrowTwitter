@@ -2,7 +2,6 @@
 import CardExplorer from "../components/CardExplorer"
 import CardTweet from "../components/CardTweet"
 import FeedBox from "../components/FeedBox"
-import HeaderPage from "../components/HeaderPage"
 import SideExplorer from "../components/SideExplorer"
 import { useNavigate } from "react-router-dom"
 import { TweetDto } from "../config/services/tweet.service"
@@ -56,10 +55,10 @@ const Home: React.FC = () => {
     <div style={{ display: "flex" }}>
       <Sidebar />
       <FeedBox>
-        <HeaderPage title={'Página Inicial'} />
+        <div className="headerPage"><strong>Página Inicial</strong></div>
         {!allTweets ? <></> :
           allTweets.map((item) => (
-            <CardTweet tweet={item.content} avatarTweet={item} avatarReTweet={item}></CardTweet>
+            <CardTweet avatarTweet={''} tweet={item} name={''} index={0} ></CardTweet>
           ))}
       </FeedBox>
       <SideExplorer>

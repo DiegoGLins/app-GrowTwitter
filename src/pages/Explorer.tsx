@@ -1,6 +1,5 @@
 import CardExplorer from "../components/CardExplorer"
 import FeedBox from "../components/FeedBox"
-import HeaderPage from "../components/HeaderPage"
 import Sidebar from "../components/SideBar"
 import SideExplorer from "../components/SideExplorer"
 
@@ -10,7 +9,7 @@ const Explorer: React.FC = () => {
         <div style={{ display: "flex", maxHeight: '100%', overflow: 'auto' }}>
             <Sidebar />
             <FeedBox>
-                <HeaderPage title={'Explorar'} />
+                <div className="headerPage"><strong>Explorar</strong></div>
                 <div style={{ margin: '25px' }}>
                     <h4><strong>O que está acontecendo ?</strong></h4>
                     <h5 style={{ color: 'gray', paddingTop: '15px' }}>Esportes - Há 45 minutos</h5>

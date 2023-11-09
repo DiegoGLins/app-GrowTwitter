@@ -1,3 +1,3 @@
-import CardExplorer from "./CardExplorer";
+import { CardExplorer } from "./CardExplorer"
 
 export default CardExplorer

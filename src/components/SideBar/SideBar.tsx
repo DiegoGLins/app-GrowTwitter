@@ -21,12 +21,8 @@ const Sidebar: React.FC = () => {
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
-    const [nameAuthorTweet, setNameAuthorTweet] = useState<string>('')
-    const [userNameUser, setUserNameUser] = useState<string>('')
-    const [idUser, setIdUser] = useState<string>('')
     const [newTweet, setNewTweet] = useState<CreateTweetRequest[]>([])
     const [contentNewTeet, setContentNewtweet] = useState<string>('')
-    const [contentTweet, setContentTweet] = useState<string>('')
     const [userData, setUserData] = useState({
         id: '',
         avatar: '',
@@ -104,7 +100,6 @@ const Sidebar: React.FC = () => {
 
     async function logoutUser() {
         if (token) {
-            console.log(token)
             const response = await logout(token)
             alert(response.message!)
             localStorage.setItem('userLogged', '')
@@ -130,7 +125,7 @@ const Sidebar: React.FC = () => {
 
         localStorage.setItem("avatar", JSON.stringify(userData.avatar))
         // console.log(dataLogged)
-        console.log(userData)
+        // console.log(userData)
 
     }, [])
 
@@ -138,7 +133,7 @@ const Sidebar: React.FC = () => {
         <>
             <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
                 content: "",
-                type: "N",
+                type: "N" || "R",
                 token: ""
             })} message={contentNewTeet}>
             </ModalTweetDefault>

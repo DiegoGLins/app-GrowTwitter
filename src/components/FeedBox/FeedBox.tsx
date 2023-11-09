@@ -4,7 +4,7 @@ interface FeedBoxProps {
     children?: React.ReactNode
 }
 
-const FeedBox: React.FC<FeedBoxProps> = ({ children }) => {
+export const FeedBox: React.FC<FeedBoxProps> = ({ children }) => {
     return (
         <>
             <FeedBoxStyled>
@@ -13,5 +13,3 @@ const FeedBox: React.FC<FeedBoxProps> = ({ children }) => {
         </>
     )
 }
-
-export default FeedBox

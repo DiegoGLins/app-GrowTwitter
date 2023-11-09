@@ -1,3 +1,3 @@
-import CardTweet from "./CardTweet";
+import CardTweet from "./CardTweet"
 
 export default CardTweet

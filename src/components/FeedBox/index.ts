@@ -1,3 +1,3 @@
-import FeedBox from "./FeedBox";
+import { FeedBox } from "./FeedBox"
 
 export default FeedBox

@@ -4,7 +4,7 @@ interface CardExplorerProps {
     children?: React.ReactNode
 }
 
-const CardExplorer: React.FC<CardExplorerProps> = ({ children }) => {
+export const CardExplorer: React.FC<CardExplorerProps> = ({ children }) => {
     return (
         <>
             <CardExplorerStyled>
@@ -24,5 +24,3 @@ const CardExplorer: React.FC<CardExplorerProps> = ({ children }) => {
         </>
     )
 }
-
-export default CardExplorer

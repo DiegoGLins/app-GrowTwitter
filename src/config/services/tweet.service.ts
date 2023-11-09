@@ -12,7 +12,7 @@ export interface TweetDto {
     likes: CreateLikeRequest[];
     type?: "N" | "R"
     tweeetOriginal?: TweetDto
-    reTweets: TweetDto[]
+    reTweet: TweetDto[]
     user: UserDto
 
 }
@@ -104,7 +104,7 @@ export async function listTweetFromUser(token: string): Promise<ResponseApiTweet
             ok: response.data?.ok,
             code: response.data?.code,
             message: response.data?.message,
-            data: response.data?.data?.tweets,
+            data: response.data?.data,
         };
     } catch (error: any) {
         return {

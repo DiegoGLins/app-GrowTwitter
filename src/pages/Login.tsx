@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useState } from 'react';
 import '../App.css';
 import { login } from '../config/services/auth.service';
 import { useNavigate } from 'react-router-dom';
+import { Alert, Snackbar } from '@mui/material';
+import AlertLoginStyled from '../components/Alerts/AlertLoginStyled';
 
 const Login: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [loadingMessageVisible, setLoadingMessageVisible] = useState(false);
+    const [openAlert, setOpenAlert] = useState<boolean>(false)
+    const [alert, setAlert] = useState('')
 
     function handleLoading() {
         setLoading(false);
@@ -15,6 +20,11 @@ const Login: React.FC = () => {
     const navCadastro = (url: string) => {
         navigate(url);
     };
+
+    const handleCloseAlert = () => {
+        setOpenAlert(true);
+    }
+
 
     const navigate = useNavigate();
     const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
@@ -34,15 +44,18 @@ const Login: React.FC = () => {
         setLoadingMessageVisible(false);
 
         if (!response.ok) {
-            alert(response.message);
+            setAlert(response.message!);
             return;
         }
 
         if (response.code === 200) {
-            alert(response.message);
+            handleCloseAlert()
+            setAlert(response.message!);
             localStorage.setItem('userLogged', JSON.stringify(response.data));
             localStorage.setItem('token', response.data.token);
-            navigate('/home');
+            setTimeout(() => {
+                navigate('/home');
+            }, 1700)
         }
 
         ev.currentTarget.username.value = '';
@@ -50,7 +63,7 @@ const Login: React.FC = () => {
     };
 
     return (
-        <>
+        <div style={{ display: 'flex' }}>
             <div className="styleLogin">
                 <div className="styleLoginBox">
                     <h1>GrowTwitter</h1>
@@ -72,7 +85,7 @@ const Login: React.FC = () => {
                         <input id="password" type="password" required />
                         <button
                             onClick={handleLoading}
-                            className="styleButton"
+                            className={loading ? 'disabledButton' : 'styleButton'}
                             type="submit"
                             disabled={loading ? true : false}
                         >
@@ -98,7 +111,14 @@ const Login: React.FC = () => {
                     )}
                 </div>
             </div>
-        </>
+            <AlertLoginStyled>
+                <Snackbar open={openAlert} autoHideDuration={1800} onClose={() => setOpenAlert(false)}>
+                    <Alert variant='outlined' onClose={() => setOpenAlert(false)} severity="success">
+                        {alert}
+                    </Alert>
+                </Snackbar>
+            </AlertLoginStyled>
+        </div>
     );
 };
 

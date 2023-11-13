@@ -6,8 +6,8 @@
 .logoSideBar {
   margin-top: 20px;
   padding: 5px;
-  margin-left: 45px;
   height: 30px;
+  position: fixed
 }
 
 .styleLogin {
@@ -145,7 +145,7 @@
 }
 
 body {
-  background-color: #f2f2f2;
+  background-color: #fff;
 }
 
 .avatarFooter {
@@ -166,8 +166,9 @@ body {
   padding: 0;
   display: flex;
   padding-bottom: 25px;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: flex-end;
+  position: relative;
 }
 
 
@@ -180,7 +181,6 @@ body {
   height: 30px;
   width: 30px;
   font-size: 14px;
-  font-style: bold;
   padding: 0px 0px 8px 10px;
 }
 
@@ -319,31 +319,40 @@ body {
 
 
 .headerProfileUser {
-  margin: 15px 0px 0px 0px;
   display: flex;
   flex-direction: column;
+  opacity: 0.85;
+  box-sizing: content-box;
+  box-shadow: 0 0 1px #c8d8ec,
+    0 0 5px #dae4f1;
   background-color: #fff;
   color: #000;
-  width: 100vw;
+  width: 100%;
   height: 160px;
-  position: relative;
+  position: fixed;
   font-family: Arial bold, Helvetica, sans-serif;
-  padding: 0px 10px 25px 25px;
+  padding: 25px 0px 25px 30px;
   align-items: start;
   justify-content: start;
+  overflow: hidden;
+  border-left: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
+  z-index: 1;
 }
 
 .headerPage {
+  display: flex;
   background-color: #fff;
   color: #000;
-  max-width: 100vw;
+  width: 50.5%;
   max-height: 80px;
   font-family: Arial bold, Helvetica, sans-serif;
   border-bottom: 2px solid #e9e9e9;
   font-size: 24px;
-  padding: 2px 0px 15px 20px;
+  padding: 25px 0px 15px 20px;
   align-items: start;
   justify-content: center;
+  align-items: center;
   background-color: #fff;
-  position: relative
+  position: fixed
 }

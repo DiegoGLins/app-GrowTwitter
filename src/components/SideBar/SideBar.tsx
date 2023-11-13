@@ -43,6 +43,7 @@ const Sidebar: React.FC = () => {
         handleAvatar()
     }, [])
 
+    localStorage.setItem("avatar", JSON.stringify(userData.avatar))
 
     const avatarStorage = localStorage.getItem('avatar')
     function getAvatar(): string {
@@ -123,9 +124,7 @@ const Sidebar: React.FC = () => {
         }
         getLogged()
 
-        localStorage.setItem("avatar", JSON.stringify(userData.avatar))
-        // console.log(dataLogged)
-        // console.log(userData)
+
 
     }, [])
 
@@ -155,7 +154,7 @@ const Sidebar: React.FC = () => {
                         </TogleMenuStyled>
                     </div>
                     <div className="styleFooter">
-                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-start', position: 'fixed' }}>
                             <div style={{ margin: '0px 0px 0px 8px', display: 'flex', flexDirection: 'column' }}>
                                 <img style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="avatarFooter" src={avatarUser} alt='avatar-footer'></img>
                                 <button onClick={logoutUser} className="buttonlogout"><strong>Sair</strong></button>

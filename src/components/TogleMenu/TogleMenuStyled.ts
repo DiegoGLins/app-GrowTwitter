@@ -3,14 +3,14 @@ import styled from "styled-components";
 export const TogleMenuStyled = styled.section`
 background-color: #fff;
 max-width: 190px;
-max-height: 750px;
+max-height: 850px;
 gap: 10px;
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: self-start;
-margin-left: 40px;
-margin-top: 12px;
+margin: 70px 0px 0px 0px;
+position: fixed;
 `
 
 export const ButtonTogleMenuStyled = styled.button`

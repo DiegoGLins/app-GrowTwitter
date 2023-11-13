@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import CardExplorer from "../components/CardExplorer"
 import CardTweet from "../components/CardTweet"
@@ -7,19 +8,16 @@ import { useNavigate } from "react-router-dom"
 import { TweetDto } from "../config/services/tweet.service"
 import { useEffect, useState } from "react"
 import Sidebar from "../components/SideBar"
+import { Box, CircularProgress } from "@mui/material"
+import AlertInfo from "../components/Alerts"
+
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   const [allTweets, setAllTweets] = useState<TweetDto[]>([])
-  const [userData, setUserData] = useState({
-    id: '',
-    avatar: '',
-    email: '',
-    name: '',
-    username: '',
-  })
+  const [error, setError] = useState('Nenhum tweet para listar');
+  const [loading, setLoading] = useState(false)
 
   const token = localStorage.getItem('token')
 
@@ -29,38 +27,37 @@ const Home: React.FC = () => {
       return
     }
 
-    const loggedData = localStorage.getItem('userLogged');
-    const dataLogged = JSON.parse(loggedData!)
 
+    //   async function getAllTweets() {
+    //   //   const response = await listAll()
+    //   //   if (response.code !== 200) {
+    //   //     setError(response.message!)
+    //   //     return
+    //   //   }
 
-    function getLogged() {
-      if (loggedData) {
-        setUserData({
-          id: dataLogged?.looged?.id,
-          avatar: dataLogged.logged?.avatar,
-          email: dataLogged?.logged?.email,
-          name: dataLogged?.logged?.name,
-          username: dataLogged?.logged?.username
-        }
-        );
-      }
+    //   //   setAllTweets(response?.data!)
+    //   //   setLoading(false)
 
-    }
-    getLogged()
-    // console.log(userData.avatar)
+    //   // }
+    //   // getAllTweets()
+
   }, [])
-
 
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
-      <FeedBox>
+      <div style={{ width: '100%' }}>
         <div className="headerPage"><strong>Página Inicial</strong></div>
-        {!allTweets ? <></> :
-          allTweets.map((item) => (
-            <CardTweet avatarTweet={''} tweet={item} name={''} index={0} ></CardTweet>
-          ))}
-      </FeedBox>
+        <FeedBox>
+          {loading ?
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}>
+              <CircularProgress />
+            </Box>
+            : !allTweets.length ? <AlertInfo><strong>{error}</strong></AlertInfo> : allTweets.map((item) => (
+              <CardTweet key={item.id} tweet={item} name={item.user.name} avatarTweet={item.avatarTweet!} />
+            ))}
+        </FeedBox>
+      </div>
       <SideExplorer>
         <CardExplorer />
       </SideExplorer>

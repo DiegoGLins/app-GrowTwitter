@@ -8,7 +8,6 @@ flex-direction: column;
 justify-content: start;
 align-items: start;
 background-color: #fff;
-border-top: 2px solid #e9e9e9;
 border-bottom: 1px solid #e9e9e9;
 border-bottom-style: inset;
 color: #000;

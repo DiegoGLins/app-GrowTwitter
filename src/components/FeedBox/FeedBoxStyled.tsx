@@ -9,6 +9,6 @@ display: flex;
 flex-direction: column;
 position: relative;
 overflow: hidden;
-margin: 190px 0px 0px 0px;
+margin: 50px 0px 0px 0px;
 border-left: 1px solid #e9e9e9;
 `

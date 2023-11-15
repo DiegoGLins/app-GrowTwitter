@@ -70,7 +70,7 @@ export async function listUsers(): Promise<ResponseApiUser> {
 export async function getUserById(): Promise<ResponseApiUser> {
     try {
         const token = localStorage.getItem('token')
-        const response = await apiService.get(`/users/byId`, {
+        const response = await apiService.get('/users/byId', {
             headers: { Authorization: token }
         })
 
@@ -82,6 +82,37 @@ export async function getUserById(): Promise<ResponseApiUser> {
         }
     }
     catch (error: any) {
-        throw new Error(error.response.data.message)
+        return {
+            ok: error.response.data?.ok,
+            code: error.response.data?.code,
+            message: error.response.data?.message
+        };
     }
 }
+
+export async function getByToken(): Promise<ResponseApiUser> {
+    try {
+        const token = localStorage.getItem('token')
+        const response = await apiService.get('/users/byToken', {
+            headers: { Authorization: token }
+        })
+
+        return {
+            ok: response.data?.ok,
+            code: response.data?.code,
+            message: response.data?.message,
+            data: response.data?.data,
+        }
+    }
+    catch (error: any) {
+        return {
+            ok: error.response.data?.ok,
+            code: error.response.data?.code,
+            message: error.response.data?.message
+        };
+    }
+
+
+
+}
+

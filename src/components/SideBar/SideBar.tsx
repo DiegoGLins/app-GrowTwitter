@@ -32,6 +32,7 @@ const Sidebar: React.FC = () => {
     })
 
     const token = localStorage.getItem('token')
+    console.log(token)
 
 
     useCallback(() => {
@@ -98,7 +99,6 @@ const Sidebar: React.FC = () => {
         createTweet()
     }, [])
 
-
     async function logoutUser() {
         if (token) {
             const response = await logout(token)
@@ -123,9 +123,6 @@ const Sidebar: React.FC = () => {
 
         }
         getLogged()
-
-
-
     }, [])
 
     return (

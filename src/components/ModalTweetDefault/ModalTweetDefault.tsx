@@ -3,7 +3,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, DialogActions, DialogContent, DialogContentText, Modal } from '@mui/material';
+import { Box, DialogActions, DialogContent, DialogContentText, Modal, TextField } from '@mui/material';
 import '../../App.css';
 
 const style = {
@@ -61,7 +61,7 @@ const ModalTweetDefault: React.FC<ModalTweetDefaultProps> = ({ message, openModa
                 </IconButton>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description" >
-                        <textarea className='size-box-tweet'>{message}</textarea>
+                        <TextField fullWidth className='size-box-tweet' >{message}</TextField>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

@@ -1,1 +1,0 @@
-export const allAvatars: string[] = []

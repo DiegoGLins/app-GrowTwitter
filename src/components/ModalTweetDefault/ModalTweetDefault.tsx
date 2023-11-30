@@ -1,9 +1,9 @@
 
 import * as React from 'react';
-import Button from '@mui/material/Button';
+
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, DialogActions, DialogContent, DialogContentText, Modal, TextField } from '@mui/material';
+import { Box, Modal } from '@mui/material';
 import '../../App.css';
 
 const style = {
@@ -27,16 +27,12 @@ const style = {
 
 export interface ModalTweetDefaultProps {
     children?: React.ReactNode;
-    message?: string;
     openModal: boolean;
     actionCancel: () => void;
-    actionConfirm: () => void
 }
 
 
-const ModalTweetDefault: React.FC<ModalTweetDefaultProps> = ({ message, openModal, actionCancel, actionConfirm }) => {
-
-    //logica para enviar tweets do usuario vai aqui pegando informações do usuario do ContentContext
+const ModalTweetDefault: React.FC<ModalTweetDefaultProps> = ({ openModal, children, actionCancel }) => {
 
 
     return (
@@ -59,16 +55,7 @@ const ModalTweetDefault: React.FC<ModalTweetDefaultProps> = ({ message, openModa
                 >
                     <CloseIcon />
                 </IconButton>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description" >
-                        <TextField fullWidth className='size-box-tweet' >{message}</TextField>
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant='contained' onClick={actionConfirm}>
-                        Tweetar
-                    </Button>
-                </DialogActions>
+                {children}
             </Box>
         </Modal>
     );

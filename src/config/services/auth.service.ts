@@ -29,11 +29,7 @@ export async function login(objlogin: LoginRequest): Promise<ResponseApiUser> {
 
 export async function logout(token: string): Promise<ResponseApiUser> {
     try {
-        const response = await apiService.get("/auth/logout", {
-            headers: {
-                Authorization: token
-            }
-        })
+        const response = await apiService.get("/auth/logout", { headers: { Authorization: token } })
 
         return {
             ok: response.data?.ok,

@@ -14,7 +14,6 @@ import CardTweet from "../components/CardTweet"
 import iconeSeta from '/icone_seta.svg'
 import selo from '/selo.svg'
 import iconSetaOrange from '/icone_seta_orange.svg'
-import { UserDto, getUserById } from "../config/services/user.service"
 
 const ProfilelUser: React.FC = () => {
 
@@ -43,23 +42,26 @@ const ProfilelUser: React.FC = () => {
   const avatarUser = handleAvatar()
   const token = localStorage.getItem('token')
 
+  // function add(tweet: TweetDto) {
+  //   setTweetsUser(prevTweets => [...prevTweets, tweet])
+  // }
+
   useEffect(() => {
     if (!token) {
       return navigate('/')
     }
     setLoading(true)
-    async function getTweetsUser() {
+
+    const updateTweets = async () => {
       const response = await listTweetFromUser(token as string)
       if (response.code !== 200) {
         setError(response?.message!)
         return
       }
-
       setTweetsUser(response?.data!)
       setLoading(false)
-
     }
-    getTweetsUser()
+    updateTweets()
   }, [])
 
   const userName = tweetsUser.find(item => item.user.username)?.user.username

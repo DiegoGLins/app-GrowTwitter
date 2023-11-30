@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import { CreateTweetRequest, TweetDto } from './tweet.service';
-import { CreateLikeRequest } from './like.service';
+import { CreateReTweetRequest, CreateTweetRequest, TweetDto } from './tweet.service';
+import { LikeCreateDto, LikeListDto } from './like.service';
 
 
 const apiService = axios.create({
@@ -34,6 +34,13 @@ export interface ResponseCreateTweetApi {
     data?: CreateTweetRequest[]
 }
 
+export interface ResponseCreateReTweetApi {
+    ok?: boolean;
+    code?: number;
+    message?: string;
+    data?: CreateReTweetRequest[]
+}
+
 export interface ResponseApiUser {
     ok?: boolean;
     code?: number;
@@ -45,7 +52,14 @@ export interface ResponseLikeApi {
     ok?: boolean;
     code?: number;
     message?: string
-    data?: CreateLikeRequest[]
+    data?: LikeCreateDto[]
+}
+
+export interface ResponseListLikeApi {
+    ok?: boolean;
+    code?: number;
+    message?: string
+    data?: LikeListDto
 }
 
 

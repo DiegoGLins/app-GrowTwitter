@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useCallback, useEffect, useState } from "react"
-import { CreateTweetRequest, create } from "../../config/services/tweet.service"
+import { CreateTweetRequest, TweetDto, create } from "../../config/services/tweet.service"
 import { IconTogleMenuStyled } from "../IconTogleMenu/IconTogleMenuStyled"
 import ModalTweetDefault from "../ModalTweetDefault"
 import { ButtonTogleMenuStyled, TogleMenuStyled } from "../TogleMenu/TogleMenuStyled"
@@ -13,40 +14,46 @@ import iconePaginaInicial from '/icone_pagina_Inicial.svg'
 import iconeExplorar from '/icone_explorar.svg'
 import iconePerfilSelecionado from '/icone_perfil_selecionado.svg'
 import IconTogleMenu from '../IconTogleMenu'
-import { logout } from "../../config/services/auth.service"
 import { getUserById } from "../../config/services/user.service"
+import { Button, DialogActions, DialogContent, DialogContentText, TextField } from "@mui/material"
+import DialogLogout from "../DialogLogout"
 
+// interface SideBarProps {
+//     updateTweets: (tweets: TweetDto) => void
+// }
 
 const Sidebar: React.FC = () => {
+
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState<boolean>(false)
-
+    const [openDialogLogout, setOpenDialogLogout] = useState<boolean>(false)
     const [newTweet, setNewTweet] = useState<CreateTweetRequest[]>([])
-    const [contentNewTeet, setContentNewtweet] = useState<string>('')
+    const [contentTweet, setContentTweet] = useState<string>('')
     const [userData, setUserData] = useState({
         id: '',
         avatar: '',
         email: '',
         name: '',
         username: '',
+        token: '',
     })
 
-    const token = localStorage.getItem('token')
-    console.log(token)
+    const handleAvatar = useCallback(() => {
+        const random = Math.random().toString(36).substring(2, 10) + `@${userData.username}`;
+        const gravatarUrl = `https://robohash.org/${random}.png`;
+        return gravatarUrl;
 
-
-    useCallback(() => {
-        function handleAvatar(): string {
-            const random = Math.random().toString(36).substring(2, 10) + `@${userData.username}`;
-            const gravatarUrl = `https://robohash.org/${random}.png`;
-            return gravatarUrl;
-        }
-        handleAvatar()
     }, [])
 
+    handleAvatar()
+
     localStorage.setItem("avatar", JSON.stringify(userData.avatar))
+    const logged = localStorage.getItem("userLogged")
+    const dataLogged = JSON.parse(logged!)
+
 
     const avatarStorage = localStorage.getItem('avatar')
+
     function getAvatar(): string {
         const gravatarUrl = `https://robohash.org/${avatarStorage}.png`;
         return gravatarUrl;
@@ -74,22 +81,26 @@ const Sidebar: React.FC = () => {
         navigate('/explorer')
     }
 
+    const token = localStorage.getItem('token')
+
+    // function add(tweet: TweetDto) {
+    //     setAllTweets(prevTweets => [...prevTweets, tweet])
+    // }
+
     const addTweet = useCallback((tweet: CreateTweetRequest) => {
-
-        if (!token) {
-            return;
+        if (tweet.content.length < 2) {
+            return alert("Mensagem precisa ter pelo menos dois caractéres")
         }
-
-        const newTweet: CreateTweetRequest = {
+        const createNewTweet: CreateTweetRequest = {
             content: tweet.content,
+            idUser: tweet.idUser,
             type: tweet.type,
             usernameAuthorTweet: tweet.usernameAuthorTweet,
             token: tweet.token
         }
 
         async function createTweet() {
-            const response = await create(newTweet)
-
+            const response = await create(createNewTweet)
             if (response.code !== 201) {
                 alert(response.message!)
                 return;
@@ -97,43 +108,54 @@ const Sidebar: React.FC = () => {
             setNewTweet(response.data!)
         }
         createTweet()
-    }, [])
+        handleClose()
+    }, [navigate])
 
-    async function logoutUser() {
+    function logoutUser() {
         if (token) {
-            const response = await logout(token)
-            alert(response.message!)
-            localStorage.setItem('userLogged', '')
-            localStorage.setItem('token', '')
-            localStorage.setItem('avatar', '')
+            localStorage.clear()
             navigate('/')
         }
     }
 
     useEffect(() => {
-        async function getLogged() {
-            const response = await getUserById()
-            setUserData({
-                id: response.data?.id,
-                avatar: response.data?.avatar,
-                email: response.data?.email,
-                name: response.data?.name,
-                username: response.data?.username
-            });
-
+        function getLogged() {
+            if (dataLogged) {
+                setUserData({
+                    id: dataLogged.logged.id,
+                    avatar: dataLogged.logged.avatar,
+                    email: dataLogged.logged.email,
+                    name: dataLogged.logged.name,
+                    username: dataLogged.logged.username,
+                    token: dataLogged.logged.token
+                });
+            }
         }
         getLogged()
     }, [])
 
+
     return (
         <>
-            <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} actionConfirm={() => addTweet({
-                content: "",
-                type: "N" || "R",
-                token: ""
-            })} message={contentNewTeet}>
-            </ModalTweetDefault>
-            <div>
+            <DialogLogout open={openDialogLogout} actionConfirm={logoutUser} actionCancel={() => setOpenDialogLogout(false)} />
+            <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} >
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        <TextField placeholder="Digite sua mensagem" fullWidth value={contentTweet} className='size-box-tweet' onChange={(e) => setContentTweet(e.target.value)}></TextField>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant='contained' onClick={() => addTweet({
+                        content: contentTweet,
+                        idUser: userData.id,
+                        type: "N",
+                        token: userData.token
+                    })}>
+                        Tweetar
+                    </Button>
+                </DialogActions>
+            </ModalTweetDefault >
+            <div style={{ borderRight: '2px solid #e9e9e9' }}>
                 <SideBarStyled>
                     <div>
                         <img className="logoSideBar" style={{ height: '35px', width: '100px' }} src={logoGrowTweet}></img>
@@ -154,7 +176,7 @@ const Sidebar: React.FC = () => {
                         <div style={{ display: 'flex', alignItems: 'flex-start', position: 'fixed' }}>
                             <div style={{ margin: '0px 0px 0px 8px', display: 'flex', flexDirection: 'column' }}>
                                 <img style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="avatarFooter" src={avatarUser} alt='avatar-footer'></img>
-                                <button onClick={logoutUser} className="buttonlogout"><strong>Sair</strong></button>
+                                <button onClick={() => setOpenDialogLogout(true)} className="buttonlogout"><strong>Sair</strong></button>
                             </div>
                             <div style={{ margin: '0px 0px 0px 5px', display: 'flex', flexDirection: "column" }}>
                                 <p style={{ width: '130px', maxHeight: '35px', padding: '0px 0px 0px 5px' }}><strong>{userData?.name}</strong></p>

@@ -10,6 +10,5 @@ flex-direction: column;
 position: relative;
 padding: 0px 0px 20px 40px;
 justify-content: space-between;
-border-right: 1px solid #e9e9e9;
 `
 

@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import apiService, { ResponseApiTweet, ResponseCreateTweetApi } from "./api.service";
-import { CreateLikeRequest } from "./like.service";
+import apiService, { ResponseApiTweet, ResponseCreateReTweetApi, ResponseCreateTweetApi } from "./api.service";
+import { LikeCreateDto } from "./like.service";
 import { UserDto } from "./user.service";
 
 export interface TweetDto {
+    token: any;
     id: string;
     content: string;
     idUser: string;
     authorTweet: string;
     avatarTweet?: string
-    likes: CreateLikeRequest[];
+    likes: LikeCreateDto[];
     type?: "N" | "R"
     tweeetOriginal?: TweetDto
     reTweet: TweetDto[]
@@ -19,8 +20,18 @@ export interface TweetDto {
 
 export interface CreateTweetRequest {
     content: string;
-    type: "N" | "R";
+    idUser: string;
+    type: "N";
     usernameAuthorTweet?: string
+    token: string
+}
+
+export interface CreateReTweetRequest {
+    content: string;
+    idUser: string;
+    type: "R";
+    usernameAuthorTweet?: string
+    idTweetOriginal: string
     token: string
 }
 
@@ -50,6 +61,31 @@ export async function create(data: CreateTweetRequest): Promise<ResponseCreateTw
 
     try {
         const response = await apiService.post('/tweets', data, {
+            headers: {
+                Authorization: data.token
+            }
+        })
+
+        return {
+            ok: response.data?.ok,
+            code: response.data?.code,
+            message: response.data?.message,
+            data: response.data?.data
+        }
+    } catch (error: any) {
+        return {
+            ok: error.response.data?.ok,
+            code: error.response.data?.code,
+            message: error.response.data?.message,
+            data: error.response.data?.data,
+        };
+    }
+}
+
+export async function createReTweet(data: CreateReTweetRequest): Promise<ResponseCreateReTweetApi> {
+
+    try {
+        const response = await apiService.post('/reTweets', data, {
             headers: {
                 Authorization: data.token
             }

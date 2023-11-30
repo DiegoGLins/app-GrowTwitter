@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import apiService, { ResponseApiUser } from "./api.service"
-import { CreateLikeRequest } from "./like.service";
+import { LikeCreateDto } from "./like.service";
 
 export interface UserDto {
     id?: string,
@@ -9,7 +9,7 @@ export interface UserDto {
     email?: string
     username: string,
     token?: string,
-    userLiker?: CreateLikeRequest[]
+    userLiker?: LikeCreateDto[]
 }
 
 
@@ -111,8 +111,5 @@ export async function getByToken(): Promise<ResponseApiUser> {
             message: error.response.data?.message
         };
     }
-
-
-
 }
 

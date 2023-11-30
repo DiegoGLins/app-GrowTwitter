@@ -1,12 +1,29 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { useState, useEffect } from "react"
 import CardExplorer from "../components/CardExplorer"
 import Sidebar from "../components/SideBar"
 import SideExplorer from "../components/SideExplorer"
+import { TweetDto, listAll } from "../config/services/tweet.service"
 
 const Explorer: React.FC = () => {
+    const [allTweets, setAllTweets] = useState<TweetDto[]>([])
+
+    useEffect(() => {
+        async function getTweetsUser() {
+            const response = await listAll()
+            if (response.code !== 200) {
+                return
+            }
+            setAllTweets(response?.data!)
+
+        }
+        getTweetsUser()
+    }, [allTweets])
+
 
     return (
         <div style={{ display: "flex", maxHeight: '100%', overflow: 'auto' }}>
-            <Sidebar />
+            <Sidebar updateTweets={() => setAllTweets} />
             <div style={{ width: '100%' }}>
                 <div className="headerPage"><strong>Explorar</strong></div>
                 <div style={{ margin: '120px 0px 0px 35px' }}>

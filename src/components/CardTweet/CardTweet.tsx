@@ -18,18 +18,18 @@ import ComentCardTweet from "./ComentCardTweet";
 import { useCallback, useEffect, useState } from "react";
 import { Button, DialogActions, DialogContent, DialogContentText, TextField } from "@mui/material";
 import ModalTweetDefault from "../ModalTweetDefault";
-import { LikeCreateDto, createLike, listLike } from "../../config/services/like.service";
+import { LikeCreateDto, createLike } from "../../config/services/like.service";
 import { deleteLike } from '../../config/services/like.service'
 export interface CardTweetProps {
     avatarTweet: string | null;
     avatarReTweet?: string | null;
     tweet: TweetDto;
     index: number;
-    likes?: LikeCreateDto
     name: string | null;
+    children?: React.ReactNode
 }
 
-const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, avatarReTweet, index }) => {
+const CardTweet: React.FC<CardTweetProps> = ({ tweet, avatarTweet, name, avatarReTweet, index, children }) => {
 
     const [newTweet, setNewTweet] = useState<CreateReTweetRequest[]>([])
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -48,27 +48,36 @@ const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, 
 
     const reTweetsUser = tweet.reTweet;
     const findNameReTweet = reTweetsUser?.map((item) => item.user?.name).map(item => item) || [];
-    const findAvatarReTweet = tweet.reTweet.map(item => item.user.avatar).map(item => item)
+    const findAvatarReTweet = tweet.reTweet.map(item => item.authorTweet)
 
     const avatarStorage = localStorage.getItem('avatar');
-    function getAvatar(): string {
+    function getAvatarUserLogged(): string {
         const gravatarUrl = `https://robohash.org/${avatarStorage}.png`;
         return gravatarUrl;
     }
-    const avatarUser = getAvatar();
-    avatarTweet = avatarUser;
+
+    function getAvatarAllAvatar(): string {
+        const random = Math.random().toString(36).substring(2, 10) + `@${tweet.authorTweet}`;
+        const gravatarUrl = `https://robohash.org/${random}.png`;
+        return gravatarUrl;
+    }
 
     function getRetweetAvatar(): string {
         const random = Math.random().toString(36).substring(2, 10) + `@${findAvatarReTweet}`;
         const gravatarUrl = `https://robohash.org/${random}.png`;
         return gravatarUrl;
     }
+
+    const avatarAllUser = getAvatarAllAvatar();
+    const avatarLogged = getAvatarUserLogged()
     const avatarRetweetUser = getRetweetAvatar();
-    avatarReTweet = avatarRetweetUser
+    avatarTweet = userData.username === tweet.authorTweet ? avatarLogged : avatarAllUser
+    avatarReTweet = tweet.authorTweet === avatarTweet ? avatarLogged : avatarRetweetUser
 
     const logged = localStorage.getItem("userLogged")
     const dataLogged = JSON.parse(logged!)
-
+    console.log(avatarTweet)
+    console.log(avatarReTweet)
     useEffect(() => {
         function getLogged() {
             if (dataLogged) {
@@ -82,21 +91,21 @@ const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, 
                 });
             }
         }
+
         getLogged()
-    }, [])
+    }, [dataLikesLocal])
 
 
     function handleClose() {
         setIsOpen(false)
     }
 
-    async function like(index: number, idTweet?: string, idReTwet?: string) {
+    async function like(idTweet?: string, idReTwet?: string) {
         const userLiked = tweet.likes.some(item => item.idAuthorLike === userData.id)
 
         setHeartLiked(true);
         if (!userLiked) {
             const liked: LikeCreateDto = {
-                idLike: likes?.idLike,
                 idTweet: idTweet || null,
                 idReTweet: idReTwet || null,
                 idAuthorTweet: tweet.authorTweet,
@@ -108,7 +117,7 @@ const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, 
             if (response.ok) {
                 setHeartLiked(true);
                 tweet.likes.push(liked)
-                setDataLikesLocal(prev => [...prev])
+                setDataLikesLocal(prev => [...prev, liked])
                 setTimeout(() => {
                     setHeartLiked(false);
                 }, 1000)
@@ -117,32 +126,38 @@ const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, 
 
             console.log(tweet.likes)
         } else {
-            // Verificar se já existe a curtida localmente
-            const findIdLike = tweet.likes.findIndex(item => item.idAuthorLike === userData.id)
-
-            setHeartLiked(false);
-            setIsLikeFinish(false);
-            //pega o id do Like correspondente ao indice 
-            if (findIdLike !== -1) {
-                const dataRemove = tweet.likes[findIdLike].idLike
-                try {
-                    if (dataRemove) {
-                        const response = await deleteLike(dataRemove)
-                        if (response.ok) {
-                            tweet.likes.splice(findIdLike, 1)
-                            setDataLikesLocal(prev => [...prev])
-                            setHeartLiked(false);
-                            setIsLikeFinish(false);
-                        }
-                    }
-                } catch (error) {
-                    return
-                }
-
-            }
-            setHeartLiked(false);
-            setIsLikeFinish(false);
+            removeLike()
         }
+        setHeartLiked(false);
+        setIsLikeFinish(false);
+    }
+
+    async function removeLike() {
+        // Verificar se já existe a curtida localmente
+        const findIdLike = tweet.likes.findIndex(item => item.idAuthorLike === userData.id)
+
+        setHeartLiked(false);
+        setIsLikeFinish(false);
+        //pega o id do Like correspondente ao indice 
+        if (findIdLike !== -1) {
+            const dataRemove = tweet.likes[findIdLike].idLike
+            try {
+                if (dataRemove) {
+                    const response = await deleteLike(dataRemove)
+                    if (response.ok) {
+                        tweet.likes.splice(findIdLike, 1)
+                        setDataLikesLocal(prev => [...prev])
+                        setHeartLiked(false);
+                        setIsLikeFinish(false);
+                    }
+                }
+            } catch (error) {
+                return
+            }
+
+        }
+        setHeartLiked(false);
+        setIsLikeFinish(false);
     }
 
     const addReTweet = useCallback((tweet: CreateReTweetRequest) => {
@@ -173,7 +188,6 @@ const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, 
 
     return (
         <>
-
             <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} >
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -202,7 +216,7 @@ const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, 
                     <div style={{ margin: '15px 15px 5px 12px', display: 'flex', gap: '10px' }}>
                         <img
                             style={{ height: '45px', width: '45px', borderRadius: '100%', border: '2px solid #ff8533' }}
-                            src={avatarTweet!}
+                            src={avatarTweet}
                             alt='avatar'
                         ></img>
                         <div>
@@ -212,11 +226,12 @@ const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, 
                             </p>
                             <p style={{ maxWidth: '135px', minHeight: '15px', paddingTop: '4px' }}>{name}</p>
                             <p className="styleMessage">{tweet.content}</p>
+                            {children}
                             <IconsTweetStyled onClick={() => setIsOpen(true)}>
                                 <IconTweetComent iconResponse={tweet.reTweet.length ? IconComentAzul : iconeResponder} count={tweet.reTweet.length} index={index}></IconTweetComent>
                             </IconsTweetStyled>
-                            <IconsTweetStyled onClick={() => like(index, tweet.id)}>
-                                <IconTweetLike iconLike={!isLikeFinish && !tweet.likes.length ? iconeCurtir : heartLiked ? iconCoracaoAnimado : iconCoracaoLiked} count={tweet.likes.length}></IconTweetLike>
+                            <IconsTweetStyled onClick={() => like(tweet.id)}>
+                                <IconTweetLike iconLike={tweet.likes.some(item => item.idAuthorLike === userData.id) ? iconCoracaoLiked : iconeCurtir} count={tweet.likes.length}></IconTweetLike>
                             </IconsTweetStyled>
                         </div>
                     </div>
@@ -240,7 +255,7 @@ const CardTweet: React.FC<CardTweetProps> = ({ likes, tweet, avatarTweet, name, 
                             <IconsTweetStyled onClick={() => setIsOpen(true)}>
                                 <IconTweetComent iconResponse={tweet.tweeetOriginal?.reTweet.length! ? IconComentAzul : iconeResponder} count={tweet.tweeetOriginal?.reTweet.length! | 0} index={index}></IconTweetComent>
                             </IconsTweetStyled>
-                            <IconsTweetStyled onClick={() => like(index, tweet.id)} >
+                            <IconsTweetStyled onClick={() => like(reTweet.id)} >
                                 <IconTweetLike iconLike={!isLikeFinish && !tweet.likes.length ? iconeCurtir : heartLiked ? iconCoracaoAnimado : iconCoracaoLiked} count={tweet.likes.length}></IconTweetLike>
                             </IconsTweetStyled>
                         </div>

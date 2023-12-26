@@ -8,19 +8,27 @@ import SideExplorer from "../components/SideExplorer"
 import { TweetDto, listTweetFromUser } from "../config/services/tweet.service"
 import { Box, CircularProgress } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import Sidebar from "../components/SideBar"
 import AlertInfo from "../components/Alerts"
 import CardTweet from "../components/CardTweet"
 import iconeSeta from '/icone_seta.svg'
 import selo from '/selo.svg'
 import iconSetaOrange from '/icone_seta_orange.svg'
+import Sidebar from "../components/SideBar/SideBar"
 
 const ProfilelUser: React.FC = () => {
 
   const navigate = useNavigate()
   const [tweetsUser, setTweetsUser] = useState<TweetDto[]>([])
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('Algo de errado ocorreu. Por favor recarregue a pagina');
+  const [error, setError] = useState('Nenhum tweet para listar');
+  const [userData, setUserData] = useState({
+    id: '',
+    avatar: '',
+    email: '',
+    name: '',
+    username: '',
+    token: '',
+  })
 
   const [isHoveredArrow, setIsHoveredArrow] = useState(false);
 
@@ -42,14 +50,26 @@ const ProfilelUser: React.FC = () => {
   const avatarUser = handleAvatar()
   const token = localStorage.getItem('token')
 
-  // function add(tweet: TweetDto) {
-  //   setTweetsUser(prevTweets => [...prevTweets, tweet])
-  // }
 
+  const logged = localStorage.getItem("userLogged")
+  const dataLogged = JSON.parse(logged!)
   useEffect(() => {
     if (!token) {
       return navigate('/')
     }
+    function getLogged() {
+      if (dataLogged) {
+        setUserData({
+          id: dataLogged.logged.id,
+          avatar: avatarUser,
+          email: dataLogged.logged.email,
+          name: dataLogged.logged.name,
+          username: dataLogged.logged.username,
+          token: dataLogged.logged.token
+        });
+      }
+    }
+    getLogged()
     setLoading(true)
 
     const updateTweets = async () => {
@@ -64,8 +84,8 @@ const ProfilelUser: React.FC = () => {
     updateTweets()
   }, [])
 
-  const userName = tweetsUser.find(item => item.user.username)?.user.username
-  const name = tweetsUser.find(item => item.user.name)?.user.name
+  const userName = tweetsUser.find(item => item.user.username)?.user?.username
+  const name = tweetsUser.find(item => item.user.name)?.user?.name
 
   return (
     <>
@@ -75,11 +95,11 @@ const ProfilelUser: React.FC = () => {
           <div className="headerProfileUser" >
             <div style={{ display: "flex", padding: '0px 10px 10px 0px' }}>
               <button className="goBack"><img style={{ height: '14px', width: '16px' }} onMouseEnter={handleMouseEnterArrow} onMouseLeave={handleMouseLeaveArrow} src={isHoveredArrow ? iconSetaOrange : iconeSeta}></img></button>
-              <p style={{ padding: '0px 0px 0px 10px' }}> <strong>Perfil de {`@ ${name}`}</strong></p>
+              <p style={{ padding: '0px 0px 0px 10px' }}> <strong>Perfil de {`@ ${userData.name}`}</strong></p>
             </div>
-            <img className="avatarHeaderUser" src={avatarUser} alt="avatarUser" />
-            <p style={{ paddingBottom: '5px', display: 'flex', alignItems: 'center' }}><strong style={{ paddingRight: '5px' }}>{name}</strong><img style={{ height: '15px', width: '15px' }} src={selo}></img></p>
-            <p>{`@ ${userName}`}</p>
+            <img className="avatarHeaderUser" src={userData.avatar} alt="avatarUser" />
+            <p style={{ paddingBottom: '5px', display: 'flex', alignItems: 'center' }}><strong style={{ paddingRight: '5px' }}>{userData.name}</strong><img style={{ height: '15px', width: '15px' }} src={selo}></img></p>
+            <p>{`@ ${userData.username}`}</p>
           </div>
           <div style={{ marginTop: '212px' }}>
             {loading ?

@@ -14,13 +14,9 @@ import iconePaginaInicial from '/icone_pagina_Inicial.svg'
 import iconeExplorar from '/icone_explorar.svg'
 import iconePerfilSelecionado from '/icone_perfil_selecionado.svg'
 import IconTogleMenu from '../IconTogleMenu'
-import { getUserById } from "../../config/services/user.service"
 import { Button, DialogActions, DialogContent, DialogContentText, TextField } from "@mui/material"
 import DialogLogout from "../DialogLogout"
-
-// interface SideBarProps {
-//     updateTweets: (tweets: TweetDto) => void
-// }
+import { logout } from "../../config/services/auth.service"
 
 const Sidebar: React.FC = () => {
 
@@ -83,10 +79,6 @@ const Sidebar: React.FC = () => {
 
     const token = localStorage.getItem('token')
 
-    // function add(tweet: TweetDto) {
-    //     setAllTweets(prevTweets => [...prevTweets, tweet])
-    // }
-
     const addTweet = useCallback((tweet: CreateTweetRequest) => {
         if (tweet.content.length < 2) {
             return alert("Mensagem precisa ter pelo menos dois caractéres")
@@ -105,16 +97,19 @@ const Sidebar: React.FC = () => {
                 alert(response.message!)
                 return;
             }
-            setNewTweet(response.data!)
+            setNewTweet(response?.data!)
         }
         createTweet()
         handleClose()
     }, [navigate])
 
-    function logoutUser() {
+    async function logoutUser() {
         if (token) {
-            localStorage.clear()
-            navigate('/')
+            const logged = await logout(token)
+            if (logged) {
+                localStorage.clear()
+                navigate('/')
+            }
         }
     }
 
@@ -138,7 +133,7 @@ const Sidebar: React.FC = () => {
     return (
         <>
             <DialogLogout open={openDialogLogout} actionConfirm={logoutUser} actionCancel={() => setOpenDialogLogout(false)} />
-            <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()} >
+            <ModalTweetDefault openModal={isOpen} actionCancel={() => handleClose()}>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         <TextField placeholder="Digite sua mensagem" fullWidth value={contentTweet} className='size-box-tweet' onChange={(e) => setContentTweet(e.target.value)}></TextField>

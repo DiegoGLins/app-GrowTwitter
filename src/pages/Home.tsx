@@ -4,12 +4,12 @@ import CardExplorer from "../components/CardExplorer"
 import SideExplorer from "../components/SideExplorer"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import Sidebar from "../components/SideBar"
 import { Box, CircularProgress } from "@mui/material"
 import AlertInfo from "../components/Alerts"
 import CardTweet from "../components/CardTweet"
 import { FeedBoxStyled } from "../components/FeedBox/FeedBoxStyled"
 import { TweetDto, listAll } from "../config/services/tweet.service"
+import Sidebar from "../components/SideBar/SideBar"
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -38,9 +38,6 @@ const Home: React.FC = () => {
     updateTweets()
   }, [navigate, token])
 
-  // function add(tweet: TweetDto) {
-  //   setAllTweets(prevTweets => [...prevTweets, tweet])
-  // }
 
   return (
     <div style={{ display: "flex" }}>

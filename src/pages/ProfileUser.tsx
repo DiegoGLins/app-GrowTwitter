@@ -50,7 +50,6 @@ const ProfilelUser: React.FC = () => {
   const avatarUser = handleAvatar()
   const token = localStorage.getItem('token')
 
-
   const logged = localStorage.getItem("userLogged")
   const dataLogged = JSON.parse(logged!)
   useEffect(() => {
@@ -83,9 +82,6 @@ const ProfilelUser: React.FC = () => {
     }
     updateTweets()
   }, [])
-
-  const userName = tweetsUser.find(item => item.user.username)?.user?.username
-  const name = tweetsUser.find(item => item.user.name)?.user?.name
 
   return (
     <>
